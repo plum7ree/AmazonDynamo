@@ -1,0 +1,22 @@
+
+syntax = "proto3";
+
+package myMessage;
+
+service MyMessage {
+
+rpc PingPong(Data) returns (Data){}
+
+}
+
+message Data {
+  string msg = 1;
+}
+
+/* message clientData {
+  int32 ip = 1;
+}
+
+message serverResponse {
+  string res = 1;
+} */
