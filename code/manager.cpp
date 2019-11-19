@@ -16,7 +16,9 @@ using grpc::ServerWriter;
 using grpc::Status;
 using myMessage::MyMessage;
 using myMessage::Data;
-
+//
+// We use strategy 1. route its request through a generic load balancer that will select a
+// node based on load information
 class ManagerService final: public MyMessage::Service {
 public:
 	Status PingPong(ServerContext *ctx, const Data *input,
