@@ -1,0 +1,4 @@
+code/*.o
+code/conhash
+code/peda*
+
