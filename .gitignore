@@ -1,4 +1,4 @@
 code/*.o
 code/conhash
 code/peda*
-
+code/gdb*
