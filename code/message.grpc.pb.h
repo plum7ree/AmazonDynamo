@@ -11,20 +11,29 @@
 #include <grpcpp/impl/codegen/async_stream.h>
 #include <grpcpp/impl/codegen/async_unary_call.h>
 #include <grpcpp/impl/codegen/client_callback.h>
-#include <grpcpp/impl/codegen/method_handler_impl.h>
+#include <grpcpp/impl/codegen/client_context.h>
+#include <grpcpp/impl/codegen/completion_queue.h>
+#include <grpcpp/impl/codegen/method_handler.h>
 #include <grpcpp/impl/codegen/proto_utils.h>
 #include <grpcpp/impl/codegen/rpc_method.h>
 #include <grpcpp/impl/codegen/server_callback.h>
+#include <grpcpp/impl/codegen/server_context.h>
 #include <grpcpp/impl/codegen/service_type.h>
 #include <grpcpp/impl/codegen/status.h>
 #include <grpcpp/impl/codegen/stub_options.h>
 #include <grpcpp/impl/codegen/sync_stream.h>
 
-namespace grpc {
+namespace grpc_impl {
 class CompletionQueue;
-class Channel;
 class ServerCompletionQueue;
 class ServerContext;
+}  // namespace grpc_impl
+
+namespace grpc {
+namespace experimental {
+template <typename RequestT, typename ResponseT>
+class MessageAllocator;
+}  // namespace experimental
 }  // namespace grpc
 
 namespace myMessage {
@@ -49,6 +58,8 @@ class MyMessage final {
       virtual ~experimental_async_interface() {}
       virtual void PingPong(::grpc::ClientContext* context, const ::myMessage::Data* request, ::myMessage::Data* response, std::function<void(::grpc::Status)>) = 0;
       virtual void PingPong(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Data* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void PingPong(::grpc::ClientContext* context, const ::myMessage::Data* request, ::myMessage::Data* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
+      virtual void PingPong(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Data* response, ::grpc::experimental::ClientUnaryReactor* reactor) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
@@ -70,6 +81,8 @@ class MyMessage final {
      public:
       void PingPong(::grpc::ClientContext* context, const ::myMessage::Data* request, ::myMessage::Data* response, std::function<void(::grpc::Status)>) override;
       void PingPong(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Data* response, std::function<void(::grpc::Status)>) override;
+      void PingPong(::grpc::ClientContext* context, const ::myMessage::Data* request, ::myMessage::Data* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
+      void PingPong(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Data* response, ::grpc::experimental::ClientUnaryReactor* reactor) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -96,7 +109,7 @@ class MyMessage final {
   template <class BaseClass>
   class WithAsyncMethod_PingPong : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithAsyncMethod_PingPong() {
       ::grpc::Service::MarkMethodAsync(0);
@@ -105,7 +118,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PingPong(::grpc::ServerContext* context, const ::myMessage::Data* request, ::myMessage::Data* response) override {
+    ::grpc::Status PingPong(::grpc::ServerContext* /*context*/, const ::myMessage::Data* /*request*/, ::myMessage::Data* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -117,11 +130,11 @@ class MyMessage final {
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_PingPong : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithCallbackMethod_PingPong() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::myMessage::Data, ::myMessage::Data>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::myMessage::Data, ::myMessage::Data>(
           [this](::grpc::ServerContext* context,
                  const ::myMessage::Data* request,
                  ::myMessage::Data* response,
@@ -129,21 +142,27 @@ class MyMessage final {
                    return this->PingPong(context, request, response, controller);
                  }));
     }
+    void SetMessageAllocatorFor_PingPong(
+        ::grpc::experimental::MessageAllocator< ::myMessage::Data, ::myMessage::Data>* allocator) {
+      static_cast<::grpc_impl::internal::CallbackUnaryHandler< ::myMessage::Data, ::myMessage::Data>*>(
+          ::grpc::Service::experimental().GetHandler(0))
+              ->SetMessageAllocator(allocator);
+    }
     ~ExperimentalWithCallbackMethod_PingPong() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PingPong(::grpc::ServerContext* context, const ::myMessage::Data* request, ::myMessage::Data* response) override {
+    ::grpc::Status PingPong(::grpc::ServerContext* /*context*/, const ::myMessage::Data* /*request*/, ::myMessage::Data* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void PingPong(::grpc::ServerContext* context, const ::myMessage::Data* request, ::myMessage::Data* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void PingPong(::grpc::ServerContext* /*context*/, const ::myMessage::Data* /*request*/, ::myMessage::Data* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   typedef ExperimentalWithCallbackMethod_PingPong<Service > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_PingPong : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithGenericMethod_PingPong() {
       ::grpc::Service::MarkMethodGeneric(0);
@@ -152,7 +171,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PingPong(::grpc::ServerContext* context, const ::myMessage::Data* request, ::myMessage::Data* response) override {
+    ::grpc::Status PingPong(::grpc::ServerContext* /*context*/, const ::myMessage::Data* /*request*/, ::myMessage::Data* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -160,7 +179,7 @@ class MyMessage final {
   template <class BaseClass>
   class WithRawMethod_PingPong : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithRawMethod_PingPong() {
       ::grpc::Service::MarkMethodRaw(0);
@@ -169,7 +188,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PingPong(::grpc::ServerContext* context, const ::myMessage::Data* request, ::myMessage::Data* response) override {
+    ::grpc::Status PingPong(::grpc::ServerContext* /*context*/, const ::myMessage::Data* /*request*/, ::myMessage::Data* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -180,11 +199,11 @@ class MyMessage final {
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_PingPong : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     ExperimentalWithRawCallbackMethod_PingPong() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+        new ::grpc_impl::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
           [this](::grpc::ServerContext* context,
                  const ::grpc::ByteBuffer* request,
                  ::grpc::ByteBuffer* response,
@@ -196,16 +215,16 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status PingPong(::grpc::ServerContext* context, const ::myMessage::Data* request, ::myMessage::Data* response) override {
+    ::grpc::Status PingPong(::grpc::ServerContext* /*context*/, const ::myMessage::Data* /*request*/, ::myMessage::Data* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void PingPong(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void PingPong(::grpc::ServerContext* /*context*/, const ::grpc::ByteBuffer* /*request*/, ::grpc::ByteBuffer* /*response*/, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_PingPong : public BaseClass {
    private:
-    void BaseClassMustBeDerivedFromService(const Service *service) {}
+    void BaseClassMustBeDerivedFromService(const Service* /*service*/) {}
    public:
     WithStreamedUnaryMethod_PingPong() {
       ::grpc::Service::MarkMethodStreamed(0,
@@ -215,7 +234,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status PingPong(::grpc::ServerContext* context, const ::myMessage::Data* request, ::myMessage::Data* response) override {
+    ::grpc::Status PingPong(::grpc::ServerContext* /*context*/, const ::myMessage::Data* /*request*/, ::myMessage::Data* /*response*/) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }

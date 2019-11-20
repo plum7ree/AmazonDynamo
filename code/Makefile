@@ -41,8 +41,8 @@ test_app :  message.pb.o message.grpc.pb.o client.o test_app.o
 	$(CC) $^ $(LDFLAGS) -o test_app
 
 con_hash: consistent_hash.cpp
-	$(CC) -Wall storage.cpp -o storage
+	$(CC) -Wall consistent_hash.cpp -o conhash
 
 
 clean:
-	$(RM) *.o $(TESTS)
+	$(RM) *.o $(TESTS) conhash
