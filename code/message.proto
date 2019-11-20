@@ -1,3 +1,4 @@
+import "google/protobuf/empty.proto";
 
 syntax = "proto3";
 
@@ -5,12 +6,23 @@ package myMessage;
 
 service MyMessage {
 
-rpc PingPong(Data) returns (Data){}
+rpc Put(KeyAndValue) returns (google.protobuf.Empty){}
+
+rpc Get(Key) returns (Value) {}
 
 }
 
-message Data {
-  string msg = 1;
+message KeyAndValue {
+  string key = 1;
+  string msg = 2;
+}
+
+message Key{
+  string key = 1;
+}
+
+message Value{
+  string value = 1;
 }
 
 /* message clientData {

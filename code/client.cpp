@@ -8,51 +8,43 @@
 
 #include "message.grpc.pb.h"
 
-using grpc::Channel;
 using grpc::ClientContext;
 using grpc::ClientReader;
 using grpc::ClientReaderWriter;
 using grpc::ClientWriter;
 using grpc::Status;
 
-using myMessage::MyMessage;
-using myMessage::Data;
+// void ClientService::sendClientId(int id) {
+// 	Data cl;
+// 	string input = "hello: " + to_string(id);
+// 	cl.set_msg(input);
+// 	Data svr;
+//
+// 	ClientContext ctx;
+// 	cout << "sending message" << endl;
+// 	Status status = stub_->PingPong(&ctx, cl, &svr);
+// 	if(!status.ok()) {
+// 		cout << "oh man we have problem in pingpong" <<endl;
+// 	}
+// 	cout<< "Got Msg from server: " << svr.msg() << endl;
+// }
 
-
-class ClientService{
-public:
-	ClientService(std::shared_ptr<Channel> channel)
-	      : stub_(MyMessage::NewStub(channel)) {
-
-	}
-	void sendClientId(int id) {
-		Data cl;
-		string input = "hello: " + to_string(id);
-		cl.set_msg(input);
-		Data svr;
-
-		ClientContext ctx;
-		cout << "sending message" << endl;
-		Status status = stub_->PingPong(&ctx, cl, &svr);
-		if(!status.ok()) {
-			cout << "oh man we have problem in pingpong" <<endl;
-		}
-		cout<< "Got Msg from server: " << svr.msg() << endl;
-	}
-
-private:
-
-	std::unique_ptr<MyMessage::Stub> stub_;
-	// std::vector<Feature> feature_list_;
-};
+void ClientService::put(string key, val_t value) {
+	KeyAndValue kv;
+	kv.set_key(key);
+	kv.set_value(value);
+	ClientContext ctx;
+	Status status = stub_->Put(&ctx, KeyAndValue);
+}
 
 void GTStoreClient::init(int id) {
 
 	cout << "Inside GTStoreClient::init() for client " << id << "\n";
 	client_id = id;
 
-	ClientService cls(grpc::CreateChannel("127.0.0.1:50051", grpc::InsecureChannelCredentials()));
+	ClientService _cls(grpc::CreateChannel("127.0.0.1:50051", grpc::InsecureChannelCredentials()));
 	cout <<"client service created!";
+	cls = _cls;
 	cls.sendClientId(id);
 
 }
@@ -73,6 +65,7 @@ bool GTStoreClient::put(string key, val_t value) {
 	}
 	cout << "Inside GTStoreClient::put() for client: " << client_id << " key: " << key << " value: " << print_value << "\n";
 	// Put the value!
+
 	return true;
 }
 
