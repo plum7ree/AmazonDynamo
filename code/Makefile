@@ -1,11 +1,12 @@
 CFLAGS  =
 LFLAGS  =
-CC      = g++ -std=c++11
+CC      = g++
 RM      = /bin/rm -rf
+CXXFLAGS = --std=c++11
 
 ####### grpc, protobuf, borrowed from https://github.com/grpc/grpc/blob/master/examples/cpp/route_guide/Makefile
 PROTOC = protoc
-PROTOS_PATH = .
+PROTOS_PATH = ./service
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
@@ -19,30 +20,31 @@ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
 TESTS = test_app
 SRC = test_app.cpp
 
+
 all: $(TESTS)
 
-############# grpc, protobuf  #############
-%.grpc.pb.cc: %.proto
-	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=. --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
-
-%.pb.cc: %.proto
-	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=. $<
-########################################################
-manager: message.pb.o message.grpc.pb.o manager.o
+manager: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o manager.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 storage: storage.cpp
 	$(CC) -Wall storage.cpp -o storage
 
-client: message.pb.o message.grpc.pb.o client.o
-	$(CC) $^ $(LDFLAGS) -o $@
+client: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/clientService.o client.o
+	$(CC) $^ $(LDFLAGS) -o client
 
-test_app :  message.pb.o message.grpc.pb.o client.o test_app.o
+test_app :  $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o client.o test_app.o
 	$(CC) $^ $(LDFLAGS) -o test_app
 
-con_hash: consistent_hash.cpp
-	$(CC) -Wall consistent_hash.cpp -o conhash
+con_hash: hash/consistent_hash.cpp
+	$(CC) -Wall hash/consistent_hash.cpp -o conhash
 
+############# grpc, protobuf  #############
+%.grpc.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --grpc_out=$(PROTOS_PATH) --plugin=protoc-gen-grpc=$(GRPC_CPP_PLUGIN_PATH) $<
+
+%.pb.cc: %.proto
+	$(PROTOC) -I $(PROTOS_PATH) --cpp_out=$(PROTOS_PATH) $<
+########################################################
 
 clean:
 	$(RM) *.o $(TESTS) conhash

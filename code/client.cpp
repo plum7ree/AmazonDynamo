@@ -1,51 +1,17 @@
 #include "gtstore.hpp"
+#include "service/clientService.hpp"
 
-#include <grpc/grpc.h>
-#include <grpcpp/channel.h>
-#include <grpcpp/client_context.h>
-#include <grpcpp/create_channel.h>
-#include <grpcpp/security/credentials.h>
 
-#include "message.grpc.pb.h"
+ClientService cls;
 
-using grpc::ClientContext;
-using grpc::ClientReader;
-using grpc::ClientReaderWriter;
-using grpc::ClientWriter;
-using grpc::Status;
-
-// void ClientService::sendClientId(int id) {
-// 	Data cl;
-// 	string input = "hello: " + to_string(id);
-// 	cl.set_msg(input);
-// 	Data svr;
-//
-// 	ClientContext ctx;
-// 	cout << "sending message" << endl;
-// 	Status status = stub_->PingPong(&ctx, cl, &svr);
-// 	if(!status.ok()) {
-// 		cout << "oh man we have problem in pingpong" <<endl;
-// 	}
-// 	cout<< "Got Msg from server: " << svr.msg() << endl;
-// }
-
-void ClientService::put(string key, val_t value) {
-	KeyAndValue kv;
-	kv.set_key(key);
-	kv.set_value(value);
-	ClientContext ctx;
-	Status status = stub_->Put(&ctx, KeyAndValue);
-}
 
 void GTStoreClient::init(int id) {
 
 	cout << "Inside GTStoreClient::init() for client " << id << "\n";
 	client_id = id;
 
-	ClientService _cls(grpc::CreateChannel("127.0.0.1:50051", grpc::InsecureChannelCredentials()));
+	cls = ClientService(grpc::CreateChannel("127.0.0.1:50051", grpc::InsecureChannelCredentials()));
 	cout <<"client service created!";
-	cls = _cls;
-	cls.sendClientId(id);
 
 }
 
@@ -65,6 +31,7 @@ bool GTStoreClient::put(string key, val_t value) {
 	}
 	cout << "Inside GTStoreClient::put() for client: " << client_id << " key: " << key << " value: " << print_value << "\n";
 	// Put the value!
+	cls.put(key, value);
 
 	return true;
 }
