@@ -11,7 +11,7 @@ void GTStoreClient::init(int id) {
 	client_id = id;
 
 	cls = ClientService(grpc::CreateChannel("127.0.0.1:50051", grpc::InsecureChannelCredentials()));
-	cout <<"client service created!";
+	cout <<"client service created!"<<endl;
 
 }
 
@@ -47,5 +47,11 @@ int main(int argc, char **argv) {
 
 	GTStoreClient client;
 	client.init(getpid());
+
+	vector<string> values;
+	values.push_back("data1");
+	values.push_back("data2");
+	values.push_back("data3");
+	client.put("node1:0001", values);
 
 }

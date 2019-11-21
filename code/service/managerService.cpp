@@ -1,11 +1,14 @@
-#include "managerService.hpp";
+#include "managerService.hpp"
 
-Status Put(ServerContext *ctx, const KeyAndValue *input) override{
-  cout << "Got Msg from client: " << input->msg() << endl;
+Status ManagerService::Put(ServerContext *ctx, const KeyAndValue *input, ::google::protobuf::Empty*) {
   PrefListType pl = ring.getPrefList(input->key());
 
+  for(auto it=pl.begin(); it != pl.end() ; it++) {
+    cout << *it << endl;
+  }
   //load balancer
-  
+
+
   return Status::OK;
 }
 

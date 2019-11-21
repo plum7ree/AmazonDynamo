@@ -1,12 +1,6 @@
 #include "gtstore.hpp"
 
-#include <grpc/grpc.h>
-#include <grpcpp/server.h>
-#include <grpcpp/server_builder.h>
-#include <grpcpp/server_context.h>
-#include <grpcpp/security/server_credentials.h>
-#include "message.grpc.pb.h"
-#include "service/managerService";
+#include "service/managerService.hpp"
 
 ManagerService ms;
 

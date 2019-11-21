@@ -109,28 +109,28 @@ void HashRing::addNode(string node) {
 HashMapType HashRing::getHashMap() {
   return hashMap;
 }
-
-int main(int argc, char **argv) {
-
-	HashRing ring(5,3); // partition size = 6 ->
-  ring.addNode("a");
-  auto hm = ring.getHashMap();
-  ring.addNode("b");
-  ring.addNode("c");
-  ring.addNode("d");
-  // ring.addNode("e");
-  // ring.addNode("f");
-  cout << hm.size() <<endl;
-  for(auto it = hm.begin() ; it != hm.end(); it++) {
-    cout << "k: " << it->first << ", v: " << it->second <<endl;
-  }
-
-  auto hm2 = ring.getHashMap();
-  cout << hm2.size() <<endl;
-  for(auto it = hm2.begin() ; it != hm2.end(); it++) {
-    cout << "k: " << it->first << ", v: " << it->second <<endl;
-  }
-
-  auto l = ring.getPrefList("node1:500512");
-
-}
+//
+// int main(int argc, char **argv) {
+//
+// 	HashRing ring(5,3); // partition size = 6 ->
+//   ring.addNode("a");
+//   auto hm = ring.getHashMap();
+//   ring.addNode("b");
+//   ring.addNode("c");
+//   ring.addNode("d");
+//   // ring.addNode("e");
+//   // ring.addNode("f");
+//   cout << hm.size() <<endl;
+//   for(auto it = hm.begin() ; it != hm.end(); it++) {
+//     cout << "k: " << it->first << ", v: " << it->second <<endl;
+//   }
+//
+//   auto hm2 = ring.getHashMap();
+//   cout << hm2.size() <<endl;
+//   for(auto it = hm2.begin() ; it != hm2.end(); it++) {
+//     cout << "k: " << it->first << ", v: " << it->second <<endl;
+//   }
+//
+//   auto l = ring.getPrefList("node1:500512");
+//
+// }

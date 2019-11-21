@@ -1,4 +1,14 @@
 code/*.o
+code/service/*
+!code/service/*.cpp
+!code/service/*.hpp
+
+code/hash/*
+!code/hash/*.cpp
+!code/hash/*.hpp
+!code/hash/*.h
+!code/hash/*.proto
+
 code/conhash
 code/peda*
 code/gdb*

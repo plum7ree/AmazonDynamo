@@ -6,7 +6,7 @@ package myMessage;
 
 service MyMessage {
 
-rpc Put(stream KeyAndValue) returns (google.protobuf.Empty){}
+rpc Put(KeyAndValue) returns (google.protobuf.Empty){}
 
 rpc Get(Key) returns (stream Value) {}
 

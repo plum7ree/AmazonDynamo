@@ -31,7 +31,7 @@ public:
 	      : stub_(MyMessage::NewStub(channel)) {
 
 	}
-	void put(string key, val_t value);
+	void put(string& key, val_t& value);
 private:
 	std::unique_ptr<MyMessage::Stub> stub_;
 	// std::vector<Feature> feature_list_;

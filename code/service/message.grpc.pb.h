@@ -37,14 +37,12 @@ class MyMessage final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    std::unique_ptr< ::grpc::ClientWriterInterface< ::myMessage::KeyAndValue>> Put(::grpc::ClientContext* context, ::google::protobuf::Empty* response) {
-      return std::unique_ptr< ::grpc::ClientWriterInterface< ::myMessage::KeyAndValue>>(PutRaw(context, response));
+    virtual ::grpc::Status Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::google::protobuf::Empty* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncPutRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::myMessage::KeyAndValue>> AsyncPut(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::myMessage::KeyAndValue>>(AsyncPutRaw(context, response, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::myMessage::KeyAndValue>> PrepareAsyncPut(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriterInterface< ::myMessage::KeyAndValue>>(PrepareAsyncPutRaw(context, response, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncPutRaw(context, request, cq));
     }
     std::unique_ptr< ::grpc::ClientReaderInterface< ::myMessage::Value>> Get(::grpc::ClientContext* context, const ::myMessage::Key& request) {
       return std::unique_ptr< ::grpc::ClientReaderInterface< ::myMessage::Value>>(GetRaw(context, request));
@@ -58,14 +56,14 @@ class MyMessage final {
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
-      virtual void Put(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::experimental::ClientWriteReactor< ::myMessage::KeyAndValue>* reactor) = 0;
+      virtual void Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Put(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Get(::grpc::ClientContext* context, ::myMessage::Key* request, ::grpc::experimental::ClientReadReactor< ::myMessage::Value>* reactor) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientWriterInterface< ::myMessage::KeyAndValue>* PutRaw(::grpc::ClientContext* context, ::google::protobuf::Empty* response) = 0;
-    virtual ::grpc::ClientAsyncWriterInterface< ::myMessage::KeyAndValue>* AsyncPutRaw(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq, void* tag) = 0;
-    virtual ::grpc::ClientAsyncWriterInterface< ::myMessage::KeyAndValue>* PrepareAsyncPutRaw(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientReaderInterface< ::myMessage::Value>* GetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::myMessage::Value>* AsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq, void* tag) = 0;
     virtual ::grpc::ClientAsyncReaderInterface< ::myMessage::Value>* PrepareAsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) = 0;
@@ -73,14 +71,12 @@ class MyMessage final {
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    std::unique_ptr< ::grpc::ClientWriter< ::myMessage::KeyAndValue>> Put(::grpc::ClientContext* context, ::google::protobuf::Empty* response) {
-      return std::unique_ptr< ::grpc::ClientWriter< ::myMessage::KeyAndValue>>(PutRaw(context, response));
+    ::grpc::Status Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::google::protobuf::Empty* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> AsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(AsyncPutRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncWriter< ::myMessage::KeyAndValue>> AsyncPut(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq, void* tag) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::myMessage::KeyAndValue>>(AsyncPutRaw(context, response, cq, tag));
-    }
-    std::unique_ptr< ::grpc::ClientAsyncWriter< ::myMessage::KeyAndValue>> PrepareAsyncPut(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncWriter< ::myMessage::KeyAndValue>>(PrepareAsyncPutRaw(context, response, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(PrepareAsyncPutRaw(context, request, cq));
     }
     std::unique_ptr< ::grpc::ClientReader< ::myMessage::Value>> Get(::grpc::ClientContext* context, const ::myMessage::Key& request) {
       return std::unique_ptr< ::grpc::ClientReader< ::myMessage::Value>>(GetRaw(context, request));
@@ -94,7 +90,8 @@ class MyMessage final {
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
-      void Put(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::experimental::ClientWriteReactor< ::myMessage::KeyAndValue>* reactor) override;
+      void Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) override;
+      void Put(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) override;
       void Get(::grpc::ClientContext* context, ::myMessage::Key* request, ::grpc::experimental::ClientReadReactor< ::myMessage::Value>* reactor) override;
      private:
       friend class Stub;
@@ -107,9 +104,8 @@ class MyMessage final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientWriter< ::myMessage::KeyAndValue>* PutRaw(::grpc::ClientContext* context, ::google::protobuf::Empty* response) override;
-    ::grpc::ClientAsyncWriter< ::myMessage::KeyAndValue>* AsyncPutRaw(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq, void* tag) override;
-    ::grpc::ClientAsyncWriter< ::myMessage::KeyAndValue>* PrepareAsyncPutRaw(::grpc::ClientContext* context, ::google::protobuf::Empty* response, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientReader< ::myMessage::Value>* GetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request) override;
     ::grpc::ClientAsyncReader< ::myMessage::Value>* AsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq, void* tag) override;
     ::grpc::ClientAsyncReader< ::myMessage::Value>* PrepareAsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) override;
@@ -122,7 +118,7 @@ class MyMessage final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status Put(::grpc::ServerContext* context, ::grpc::ServerReader< ::myMessage::KeyAndValue>* reader, ::google::protobuf::Empty* response);
+    virtual ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response);
     virtual ::grpc::Status Get(::grpc::ServerContext* context, const ::myMessage::Key* request, ::grpc::ServerWriter< ::myMessage::Value>* writer);
   };
   template <class BaseClass>
@@ -137,12 +133,12 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, ::grpc::ServerReader< ::myMessage::KeyAndValue>* reader, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestPut(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::google::protobuf::Empty, ::myMessage::KeyAndValue>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncClientStreaming(0, context, reader, new_call_cq, notification_cq, tag);
+    void RequestPut(::grpc::ServerContext* context, ::myMessage::KeyAndValue* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -173,20 +169,23 @@ class MyMessage final {
    public:
     ExperimentalWithCallbackMethod_Put() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc::internal::CallbackClientStreamingHandler< ::myMessage::KeyAndValue, ::google::protobuf::Empty>(
-          [this] { return this->Put(); }));
+        new ::grpc::internal::CallbackUnaryHandler< ::myMessage::KeyAndValue, ::google::protobuf::Empty>(
+          [this](::grpc::ServerContext* context,
+                 const ::myMessage::KeyAndValue* request,
+                 ::google::protobuf::Empty* response,
+                 ::grpc::experimental::ServerCallbackRpcController* controller) {
+                   return this->Put(context, request, response, controller);
+                 }));
     }
     ~ExperimentalWithCallbackMethod_Put() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, ::grpc::ServerReader< ::myMessage::KeyAndValue>* reader, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerReadReactor< ::myMessage::KeyAndValue, ::google::protobuf::Empty>* Put() {
-      return new ::grpc::internal::UnimplementedReadReactor<
-        ::myMessage::KeyAndValue, ::google::protobuf::Empty>;}
+    virtual void Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Get : public BaseClass {
@@ -223,7 +222,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, ::grpc::ServerReader< ::myMessage::KeyAndValue>* reader, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -257,12 +256,12 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, ::grpc::ServerReader< ::myMessage::KeyAndValue>* reader, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestPut(::grpc::ServerContext* context, ::grpc::ServerAsyncReader< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* reader, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
-      ::grpc::Service::RequestAsyncClientStreaming(0, context, reader, new_call_cq, notification_cq, tag);
+    void RequestPut(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -292,20 +291,23 @@ class MyMessage final {
    public:
     ExperimentalWithRawCallbackMethod_Put() {
       ::grpc::Service::experimental().MarkMethodRawCallback(0,
-        new ::grpc::internal::CallbackClientStreamingHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
-          [this] { return this->Put(); }));
+        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          [this](::grpc::ServerContext* context,
+                 const ::grpc::ByteBuffer* request,
+                 ::grpc::ByteBuffer* response,
+                 ::grpc::experimental::ServerCallbackRpcController* controller) {
+                   this->Put(context, request, response, controller);
+                 }));
     }
     ~ExperimentalWithRawCallbackMethod_Put() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, ::grpc::ServerReader< ::myMessage::KeyAndValue>* reader, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual ::grpc::experimental::ServerReadReactor< ::grpc::ByteBuffer, ::grpc::ByteBuffer>* Put() {
-      return new ::grpc::internal::UnimplementedReadReactor<
-        ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
+    virtual void Put(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithRawCallbackMethod_Get : public BaseClass {
@@ -329,7 +331,27 @@ class MyMessage final {
       return new ::grpc::internal::UnimplementedWriteReactor<
         ::grpc::ByteBuffer, ::grpc::ByteBuffer>;}
   };
-  typedef Service StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_Put : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_Put() {
+      ::grpc::Service::MarkMethodStreamed(0,
+        new ::grpc::internal::StreamedUnaryHandler< ::myMessage::KeyAndValue, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_Put<BaseClass>::StreamedPut, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_Put() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedPut(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::myMessage::KeyAndValue,::google::protobuf::Empty>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_Put<Service > StreamedUnaryService;
   template <class BaseClass>
   class WithSplitStreamingMethod_Get : public BaseClass {
    private:
@@ -351,7 +373,7 @@ class MyMessage final {
     virtual ::grpc::Status StreamedGet(::grpc::ServerContext* context, ::grpc::ServerSplitStreamer< ::myMessage::Key,::myMessage::Value>* server_split_streamer) = 0;
   };
   typedef WithSplitStreamingMethod_Get<Service > SplitStreamedService;
-  typedef WithSplitStreamingMethod_Get<Service > StreamedService;
+  typedef WithStreamedUnaryMethod_Put<WithSplitStreamingMethod_Get<Service > > StreamedService;
 };
 
 }  // namespace myMessage

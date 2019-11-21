@@ -7,6 +7,7 @@ CXXFLAGS = --std=c++11
 ####### grpc, protobuf, borrowed from https://github.com/grpc/grpc/blob/master/examples/cpp/route_guide/Makefile
 PROTOC = protoc
 PROTOS_PATH = ./service
+HASH_PATH = ./hash
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
@@ -23,7 +24,7 @@ SRC = test_app.cpp
 
 all: $(TESTS)
 
-manager: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o manager.o
+manager: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/managerService.o $(HASH_PATH)/consistent_hash.o  manager.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
 storage: storage.cpp
@@ -47,4 +48,4 @@ con_hash: hash/consistent_hash.cpp
 ########################################################
 
 clean:
-	$(RM) *.o $(TESTS) conhash
+	$(RM) *.o $(TESTS) conhash service/*.o hash/*.o
