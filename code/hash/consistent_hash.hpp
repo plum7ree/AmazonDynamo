@@ -2,6 +2,8 @@
 #include <vector>
 #include <map>
 
+using namespace std;
+
 //
 // class HashRing
 // nVNode
@@ -16,6 +18,10 @@
 //
 // remove:
 // nodes are distrubted
+
+typedef vector<string> PrefListType;
+typedef map<size_t, string> HashMapType;
+
 
 class HashRing{
 private:

@@ -2,23 +2,15 @@
 #include <limits>
 #include <iostream>
 #include <algorithm>
-
+#include <string>
 
 #include <time.h>
 #include <stdlib.h>
 #include <assert.h>
 
-#include "consistent_hash.hpp";
+#include "consistent_hash.hpp"
 
-
-using namespace std;
-
-
-typedef vector<string> PrefListType;
-typedef map<size_t, string> HashMapType;
-
-
-HashRing::PrefListType getPrefList(string k) {
+PrefListType HashRing::getPrefList(string k) {
   assert(prefListSize <= hashMap.size());
   vector<string> ret;
   size_t h = std::hash<string>{}(k);
@@ -28,10 +20,13 @@ HashRing::PrefListType getPrefList(string k) {
   }
   ret.push_back(it->second);
   size_t count = 1;
+  size_t hasLoopBefore = 0;
   while(count < prefListSize) {
     it++;
     if (it == hashMap.end()) {
+      if (hasLoopBefore) break;
       it = hashMap.begin();
+      hasLoopBefore = 1;
     }
     // check if already exisintg, because there are multiple vNode for one pNode
     auto it2 = find(ret.begin(), ret.end(), it->second);
@@ -40,6 +35,7 @@ HashRing::PrefListType getPrefList(string k) {
     }
     ret.push_back(it->second);
     count++;
+    cout << count << endl;
   }
 
 
@@ -53,7 +49,7 @@ HashRing::PrefListType getPrefList(string k) {
 }
 
 
-HashRing::void addNode(string node) {
+void HashRing::addNode(string node) {
   // assert node name is not exisintg
   if(hashMap.empty()) {
     size_t m = std::numeric_limits<std::size_t>::max();
@@ -94,7 +90,7 @@ HashRing::void addNode(string node) {
       }
     }
     int howManyReplacePerInstance = replaceThisList.size() - Q_div_S;  // don't replace only one left.
-    // cout << "node:" << replaceThis <<", hMRPI: " << howManyReplacePerInstance <<endl;
+    cout << "node:" << replaceThis <<", hMRPI: " << howManyReplacePerInstance <<endl;
     vector<size_t> alreadyReplaced;
     for(int j=0;j<howManyReplacePerInstance;j++) {
       auto r = rand() % replaceThisList.size();
@@ -110,19 +106,19 @@ HashRing::void addNode(string node) {
 
 }
 
-HashRing::HashMapType getHashMap() {
+HashMapType HashRing::getHashMap() {
   return hashMap;
 }
 
 int main(int argc, char **argv) {
 
-	HashRing ring(20,3);
+	HashRing ring(5,3); // partition size = 6 ->
   ring.addNode("a");
   auto hm = ring.getHashMap();
   ring.addNode("b");
-  ring.addNode("c");
-  ring.addNode("d");
-  ring.addNode("e");
+  // ring.addNode("c");
+  // ring.addNode("d");
+  // ring.addNode("e");
   // ring.addNode("f");
   cout << hm.size() <<endl;
   for(auto it = hm.begin() ; it != hm.end(); it++) {
@@ -135,6 +131,6 @@ int main(int argc, char **argv) {
     cout << "k: " << it->first << ", v: " << it->second <<endl;
   }
 
-  auto l = ring.getPrefList("node1:50051");
+  auto l = ring.getPrefList("node1:500512");
 
 }

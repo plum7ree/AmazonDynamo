@@ -1,6 +1,6 @@
 CFLAGS  =
 LFLAGS  =
-CC      = g++
+CC      = g++ --std=c++11
 RM      = /bin/rm -rf
 CXXFLAGS = --std=c++11
 
