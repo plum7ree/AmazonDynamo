@@ -116,8 +116,8 @@ int main(int argc, char **argv) {
   ring.addNode("a");
   auto hm = ring.getHashMap();
   ring.addNode("b");
-  // ring.addNode("c");
-  // ring.addNode("d");
+  ring.addNode("c");
+  ring.addNode("d");
   // ring.addNode("e");
   // ring.addNode("f");
   cout << hm.size() <<endl;
