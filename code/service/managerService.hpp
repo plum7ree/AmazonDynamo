@@ -21,9 +21,10 @@ using grpc::Status;
 using myMessage::MyMessage;
 using myMessage::KeyAndValue;
 
-
 #define _VNODE_SIZE 			30
 #define _PREF_LIST_SIZE 	4
+#define PUT 1
+#define GET 2
 //
 // We use strategy 1. route its request through a generic load balancer that will select a
 // node based on load information
@@ -33,5 +34,6 @@ private:
 	HashRing ring = HashRing((size_t)_VNODE_SIZE, (size_t)_PREF_LIST_SIZE);
 public:
 	Status Put(ServerContext *ctx, const KeyAndValue *input, ::google::protobuf::Empty*) override;
+	void addNode(string node);
 
 };

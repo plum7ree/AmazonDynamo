@@ -11,8 +11,10 @@
 
 
 using namespace std;
+#define MANAGER_IP ("127.0.0.1:50051")
 
 typedef vector<string> val_t;
+
 
 class GTStoreClient {
 private:
@@ -31,6 +33,8 @@ public:
 };
 
 class GTStoreStorage {
+private:
+	// unordered_map<string, string> inMemoryStorage;
 public:
 	void init();
 };

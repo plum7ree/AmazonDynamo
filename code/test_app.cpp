@@ -6,15 +6,15 @@ void single_set_get(int client_id) {
   GTStoreClient client;
 	client.init(client_id);
 
-	// string key = to_string(client_id);
-	// vector<string> value;
-	// value.push_back("phone");
-	// value.push_back("phone_case");
-	//
-	// client.put(key, value);
-	// client.get(key);
-	//
-	// client.finalize();
+	string key = to_string(client_id);
+	vector<string> value;
+	value.push_back("phone");
+	value.push_back("phone_case");
+
+	client.put(key, value);
+	client.get(key);
+
+	client.finalize();
 }
 
 
