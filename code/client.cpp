@@ -10,7 +10,7 @@ void GTStoreClient::init(int id) {
 	cout << "Inside GTStoreClient::init() for client " << id << "\n";
 	client_id = id;
 
-	cls = ClientService(grpc::CreateChannel("127.0.0.1:50051", grpc::InsecureChannelCredentials()));
+	cls = ClientService(grpc::CreateChannel(MANAGER_IP, grpc::InsecureChannelCredentials()));
 	cout <<"client service created!"<<endl;
 
 }

@@ -12,4 +12,7 @@ Status ManagerService::Put(ServerContext *ctx, const KeyAndValue *input, ::googl
   return Status::OK;
 }
 
+void ManagerService::addNode(string node) {
+  ring.addNode(node);
+}
 // Status

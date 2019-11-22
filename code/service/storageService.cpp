@@ -38,7 +38,6 @@ void StorageService::registerToManager(string ip) {
   input.set_ip(ip);
   Status s = stub_->RequestToManager(ctx, ip, response);
 }
-
 void StorageService::runStorage(string ip){
   while(true) {
     ClientContext ctx;

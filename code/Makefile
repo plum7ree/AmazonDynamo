@@ -27,8 +27,8 @@ all: $(TESTS)
 manager: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/managerService.o $(HASH_PATH)/consistent_hash.o  manager.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
-storage: storage.cpp
-	$(CC) -Wall storage.cpp -o storage
+storage: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/storageService.o storage.o
+	$(CC) $^ $(LDFLAGS) -o $@
 
 client: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/clientService.o client.o
 	$(CC) $^ $(LDFLAGS) -o client
