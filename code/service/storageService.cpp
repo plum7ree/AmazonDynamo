@@ -31,13 +31,14 @@
 //   return Status::OK;
 // }
 
-void StorageService::registerToManager(string ip) {
-  ClientContext ctx;
-  StorageInfo input;
-  ManagerResponse response;
-  input.set_ip(ip);
-  Status s = stub_->RequestToManager(ctx, ip, response);
-}
+// void StorageService::registerToManager(string ip) {
+//   ClientContext ctx;
+//   StorageInfo input;
+//   ManagerResponse response;
+//   input.set_ip(ip);
+//   Status s = stub_->RequestToManager(ctx, ip, response);
+// }
+
 void StorageService::runStorage(string ip){
   while(true) {
     ClientContext ctx;
