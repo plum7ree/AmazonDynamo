@@ -3,22 +3,22 @@
 #include "service/managerService.hpp"
 
 unordered_map<string,shared_ptr<Channel>> storage_map;
-vector<std::unique_ptr<Stub>> storage_nodes;
 ManagerService ms;
+
 
 
 void GTStoreManager::init() {
 
 	cout << "Inside GTStoreManager::init()\n";
-
 	std::string server_address((string)MANAGER_IP);
 
-  ServerBuilder builder;
-  builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
+	ServerBuilder builder;
+	builder.AddListeningPort(server_address, grpc::InsecureServerCredentials());
 	builder.RegisterService(&ms);
-  std::unique_ptr<Server> server(builder.BuildAndStart());
-  std::cout << "Server listening on " << server_address << std::endl;
-  server->Wait();
+	std::unique_ptr<Server> server(builder.BuildAndStart());
+	std::cout << "Server listening on " << server_address << std::endl;
+	server->Wait();
+
 
 }
 

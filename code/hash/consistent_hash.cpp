@@ -39,9 +39,9 @@ PrefListType HashRing::getPrefList(string k) {
   }
 
 
-  cout << "hash: "<< h << endl << "List: ";
+  // cout << "hash: "<< h << endl << "List: ";
   for(auto it=ret.begin();it!=ret.end();it++) {
-    cout << *it <<", ";
+    // cout << *it <<", ";
   }
   cout << endl;
 
@@ -53,7 +53,7 @@ void HashRing::addNode(string node) {
   // assert node name is not exisintg
   if(hashMap.empty()) {
     size_t m = std::numeric_limits<std::size_t>::max();
-    cout << "max: " << m << endl;
+    // cout << "max: " << m << endl;
     size_t partition = m/nVNode;
     size_t location = 0;
     for(auto i=0; i<nVNode; i++) {
@@ -90,7 +90,7 @@ void HashRing::addNode(string node) {
       }
     }
     int howManyReplacePerInstance = replaceThisList.size() - Q_div_S;  // don't replace only one left.
-    cout << "node:" << replaceThis <<", hMRPI: " << howManyReplacePerInstance <<endl;
+    // cout << "node:" << replaceThis <<", hMRPI: " << howManyReplacePerInstance <<endl;
     vector<size_t> alreadyReplaced;
     for(int j=0;j<howManyReplacePerInstance;j++) {
       auto r = rand() % replaceThisList.size();

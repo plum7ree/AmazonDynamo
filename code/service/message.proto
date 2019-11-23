@@ -10,11 +10,13 @@ rpc Put(KeyAndValue) returns (google.protobuf.Empty){}
 
 rpc Get(Key) returns (Value) {}
 
-// storage sends this
+rpc notifyToManager(StorageInfo) returns (google.protobuf.Empty) {}
+  
+/* // storage sends this
 rpc RequestToManager(StorageInfo) returns (ManagerResponse){}
 
 // storage sends this
-rpc SendDataToManager(ValueWithVersion) returns (google.protobuf.Empty) {}
+rpc SendDataToManager(ValueWithVersion) returns (google.protobuf.Empty) {} */
 
 }
 
