@@ -10,9 +10,10 @@
 
 #include "consistent_hash.hpp"
 
-PrefListType HashRing::getPrefList(string k) {
+PrefListType HashRing::getPrefList(string k) {  // dynamo paper's preference list.
+  cout << "getPrefList-prefsize vs hashmap size: " << prefListSize << ", " << hashMap.size() <<endl;
   assert(prefListSize <= hashMap.size());
-  vector<string> ret;
+  PrefListType ret;
   size_t h = std::hash<string>{}(k);
   auto it = hashMap.lower_bound(h);
   if (it == hashMap.end()) {
@@ -35,15 +36,15 @@ PrefListType HashRing::getPrefList(string k) {
     }
     ret.push_back(it->second);
     count++;
-    cout << count << endl;
   }
 
 
-  // cout << "hash: "<< h << endl << "List: ";
-  for(auto it=ret.begin();it!=ret.end();it++) {
-    // cout << *it <<", ";
-  }
-  cout << endl;
+  // cout << "HashRing::getPrefList returning : ";
+  // for(auto it=ret.begin();it!=ret.end();it++) {
+  //   cout << *it <<", ";
+  // }
+  // cout<<endl;
+  // cout <<"returning "<< endl;
 
   return ret;
 }
@@ -61,6 +62,7 @@ void HashRing::addNode(string node) {
       location += partition;
     }
     pNodeList.push_back(node);
+    // cout << "HashRing::addNode hashMap created, size: " << hashMap.size() << endl;
     return;
   }
 

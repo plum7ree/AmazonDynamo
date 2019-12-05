@@ -48,4 +48,4 @@ con_hash: hash/consistent_hash.cpp
 ########################################################
 
 clean:
-	$(RM) *.o $(TESTS) conhash service/*.o hash/*.o
+	$(RM) *.o $(TESTS) conhash service/*.o hash/*.o manager storage client 

@@ -37,12 +37,12 @@ class MyMessage final {
   class StubInterface {
    public:
     virtual ~StubInterface() {}
-    virtual ::grpc::Status Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::google::protobuf::Empty* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncPutRaw(context, request, cq));
+    virtual ::grpc::Status Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::myMessage::Empty* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>> AsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>>(AsyncPutRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncPutRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>> PrepareAsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>>(PrepareAsyncPutRaw(context, request, cq));
     }
     virtual ::grpc::Status Get(::grpc::ClientContext* context, const ::myMessage::Key& request, ::myMessage::Value* response) = 0;
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Value>> AsyncGet(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) {
@@ -51,41 +51,41 @@ class MyMessage final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Value>> PrepareAsyncGet(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Value>>(PrepareAsyncGetRaw(context, request, cq));
     }
-    virtual ::grpc::Status notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::google::protobuf::Empty* response) = 0;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> AsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(AsyncnotifyToManagerRaw(context, request, cq));
+    virtual ::grpc::Status notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::myMessage::Empty* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>> AsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>>(AsyncnotifyToManagerRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>> PrepareAsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>>(PrepareAsyncnotifyToManagerRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>> PrepareAsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>>(PrepareAsyncnotifyToManagerRaw(context, request, cq));
     }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
-      virtual void Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void Put(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void Put(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Get(::grpc::ClientContext* context, const ::myMessage::Key* request, ::myMessage::Value* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Get(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Value* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
-      virtual void notifyToManager(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void notifyToManager(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* AsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* PrepareAsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Value>* AsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Value>* PrepareAsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* AsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) = 0;
-    virtual ::grpc::ClientAsyncResponseReaderInterface< ::google::protobuf::Empty>* PrepareAsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* AsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* PrepareAsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
     Stub(const std::shared_ptr< ::grpc::ChannelInterface>& channel);
-    ::grpc::Status Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::google::protobuf::Empty* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> AsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(AsyncPutRaw(context, request, cq));
+    ::grpc::Status Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::myMessage::Empty* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>> AsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>>(AsyncPutRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(PrepareAsyncPutRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>> PrepareAsyncPut(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>>(PrepareAsyncPutRaw(context, request, cq));
     }
     ::grpc::Status Get(::grpc::ClientContext* context, const ::myMessage::Key& request, ::myMessage::Value* response) override;
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Value>> AsyncGet(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) {
@@ -94,22 +94,22 @@ class MyMessage final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Value>> PrepareAsyncGet(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Value>>(PrepareAsyncGetRaw(context, request, cq));
     }
-    ::grpc::Status notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::google::protobuf::Empty* response) override;
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> AsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(AsyncnotifyToManagerRaw(context, request, cq));
+    ::grpc::Status notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::myMessage::Empty* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>> AsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>>(AsyncnotifyToManagerRaw(context, request, cq));
     }
-    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>> PrepareAsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
-      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>>(PrepareAsyncnotifyToManagerRaw(context, request, cq));
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>> PrepareAsyncnotifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>>(PrepareAsyncnotifyToManagerRaw(context, request, cq));
     }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
-      void Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) override;
-      void Put(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) override;
+      void Put(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
+      void Put(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
       void Get(::grpc::ClientContext* context, const ::myMessage::Key* request, ::myMessage::Value* response, std::function<void(::grpc::Status)>) override;
       void Get(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Value* response, std::function<void(::grpc::Status)>) override;
-      void notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) override;
-      void notifyToManager(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::google::protobuf::Empty* response, std::function<void(::grpc::Status)>) override;
+      void notifyToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
+      void notifyToManager(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -121,12 +121,12 @@ class MyMessage final {
    private:
     std::shared_ptr< ::grpc::ChannelInterface> channel_;
     class experimental_async async_stub_{this};
-    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* AsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* PrepareAsyncPutRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::myMessage::Value>* AsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::myMessage::Value>* PrepareAsyncGetRaw(::grpc::ClientContext* context, const ::myMessage::Key& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* AsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) override;
-    ::grpc::ClientAsyncResponseReader< ::google::protobuf::Empty>* PrepareAsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* AsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* PrepareAsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Put_;
     const ::grpc::internal::RpcMethod rpcmethod_Get_;
     const ::grpc::internal::RpcMethod rpcmethod_notifyToManager_;
@@ -137,9 +137,9 @@ class MyMessage final {
    public:
     Service();
     virtual ~Service();
-    virtual ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response);
+    virtual ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response);
     virtual ::grpc::Status Get(::grpc::ServerContext* context, const ::myMessage::Key* request, ::myMessage::Value* response);
-    virtual ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response);
+    virtual ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Put : public BaseClass {
@@ -153,11 +153,11 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestPut(::grpc::ServerContext* context, ::myMessage::KeyAndValue* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestPut(::grpc::ServerContext* context, ::myMessage::KeyAndValue* request, ::grpc::ServerAsyncResponseWriter< ::myMessage::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(0, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -193,11 +193,11 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    void RequestnotifyToManager(::grpc::ServerContext* context, ::myMessage::StorageInfo* request, ::grpc::ServerAsyncResponseWriter< ::google::protobuf::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+    void RequestnotifyToManager(::grpc::ServerContext* context, ::myMessage::StorageInfo* request, ::grpc::ServerAsyncResponseWriter< ::myMessage::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(2, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
@@ -209,10 +209,10 @@ class MyMessage final {
    public:
     ExperimentalWithCallbackMethod_Put() {
       ::grpc::Service::experimental().MarkMethodCallback(0,
-        new ::grpc::internal::CallbackUnaryHandler< ::myMessage::KeyAndValue, ::google::protobuf::Empty>(
+        new ::grpc::internal::CallbackUnaryHandler< ::myMessage::KeyAndValue, ::myMessage::Empty>(
           [this](::grpc::ServerContext* context,
                  const ::myMessage::KeyAndValue* request,
-                 ::google::protobuf::Empty* response,
+                 ::myMessage::Empty* response,
                  ::grpc::experimental::ServerCallbackRpcController* controller) {
                    return this->Put(context, request, response, controller);
                  }));
@@ -221,11 +221,11 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Get : public BaseClass {
@@ -259,10 +259,10 @@ class MyMessage final {
    public:
     ExperimentalWithCallbackMethod_notifyToManager() {
       ::grpc::Service::experimental().MarkMethodCallback(2,
-        new ::grpc::internal::CallbackUnaryHandler< ::myMessage::StorageInfo, ::google::protobuf::Empty>(
+        new ::grpc::internal::CallbackUnaryHandler< ::myMessage::StorageInfo, ::myMessage::Empty>(
           [this](::grpc::ServerContext* context,
                  const ::myMessage::StorageInfo* request,
-                 ::google::protobuf::Empty* response,
+                 ::myMessage::Empty* response,
                  ::grpc::experimental::ServerCallbackRpcController* controller) {
                    return this->notifyToManager(context, request, response, controller);
                  }));
@@ -271,11 +271,11 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
-    virtual void notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+    virtual void notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   typedef ExperimentalWithCallbackMethod_Put<ExperimentalWithCallbackMethod_Get<ExperimentalWithCallbackMethod_notifyToManager<Service > > > ExperimentalCallbackService;
   template <class BaseClass>
@@ -290,7 +290,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -324,7 +324,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -341,7 +341,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -381,7 +381,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -408,7 +408,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -458,7 +458,7 @@ class MyMessage final {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable synchronous version of this method
-    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -471,18 +471,18 @@ class MyMessage final {
    public:
     WithStreamedUnaryMethod_Put() {
       ::grpc::Service::MarkMethodStreamed(0,
-        new ::grpc::internal::StreamedUnaryHandler< ::myMessage::KeyAndValue, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_Put<BaseClass>::StreamedPut, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::myMessage::KeyAndValue, ::myMessage::Empty>(std::bind(&WithStreamedUnaryMethod_Put<BaseClass>::StreamedPut, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_Put() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status Put(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamedPut(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::myMessage::KeyAndValue,::google::protobuf::Empty>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamedPut(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::myMessage::KeyAndValue,::myMessage::Empty>* server_unary_streamer) = 0;
   };
   template <class BaseClass>
   class WithStreamedUnaryMethod_Get : public BaseClass {
@@ -511,18 +511,18 @@ class MyMessage final {
    public:
     WithStreamedUnaryMethod_notifyToManager() {
       ::grpc::Service::MarkMethodStreamed(2,
-        new ::grpc::internal::StreamedUnaryHandler< ::myMessage::StorageInfo, ::google::protobuf::Empty>(std::bind(&WithStreamedUnaryMethod_notifyToManager<BaseClass>::StreamednotifyToManager, this, std::placeholders::_1, std::placeholders::_2)));
+        new ::grpc::internal::StreamedUnaryHandler< ::myMessage::StorageInfo, ::myMessage::Empty>(std::bind(&WithStreamedUnaryMethod_notifyToManager<BaseClass>::StreamednotifyToManager, this, std::placeholders::_1, std::placeholders::_2)));
     }
     ~WithStreamedUnaryMethod_notifyToManager() override {
       BaseClassMustBeDerivedFromService(this);
     }
     // disable regular version of this method
-    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::google::protobuf::Empty* response) override {
+    ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
     // replace default version of method with streamed unary
-    virtual ::grpc::Status StreamednotifyToManager(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::myMessage::StorageInfo,::google::protobuf::Empty>* server_unary_streamer) = 0;
+    virtual ::grpc::Status StreamednotifyToManager(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::myMessage::StorageInfo,::myMessage::Empty>* server_unary_streamer) = 0;
   };
   typedef WithStreamedUnaryMethod_Put<WithStreamedUnaryMethod_Get<WithStreamedUnaryMethod_notifyToManager<Service > > > StreamedUnaryService;
   typedef Service SplitStreamedService;

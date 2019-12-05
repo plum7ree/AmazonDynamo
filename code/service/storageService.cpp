@@ -41,14 +41,23 @@ StorageServer server;
 //   Status s = stub_->RequestToManager(ctx, ip, response);
 // }
 
+// send StorageInfo to Manager
 void StorageClient::notifyToManager(string ip) {
   ClientContext ctx;
   StorageInfo input;
+  Empty empty;
   input.set_ip(ip);
-  Status s =  stub_->notifyToManager(&ctx, input, NULL);
+  cout << "StorageClient::notifyToManager : sending ip to server..." << std::endl;
+  Status s =  stub_->notifyToManager(&ctx, input, &empty);
+  if (s.ok()) {
+      cout << "StorageClient::notifyToManager : notifyToManager rpc succeeded." << std::endl;
+    } else {
+      cout << "StorageClient::notifyToManager : notifyToManager rpc failed." << std::endl;
+    }
 }
 
-Status StorageServer::Put(ServerContext *ctx, const KeyAndValue *input, ::google::protobuf::Empty*) {
+// recieve KeyandValue from Manager
+Status StorageServer::Put(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) {
   string k = input->key();
   val_t value;
   for (auto i=0;i<input->value_size();i++) {

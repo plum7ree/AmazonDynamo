@@ -3,7 +3,7 @@
 #include "gtstore.hpp"
 #include "service/storageService.hpp"
 
-// preference list
+
 pthread_cond_t cond;
 pthread_mutex_t _lock;
 
@@ -41,6 +41,7 @@ void GTStoreStorage::init() {
 	pthread_cond_signal(&cond);
 	// ::_ready = true;
 	server->Wait();
+
 
 
 

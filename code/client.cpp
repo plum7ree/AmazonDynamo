@@ -45,6 +45,11 @@ void GTStoreClient::finalize() {
 
 int main(int argc, char **argv) {
 
+	if(argc < 2) {
+		cout << "no node name. \nex) ./client <some ip or node name>"<<endl;
+		exit(EXIT_SUCCESS);
+	}
+
 	GTStoreClient client;
 	client.init(getpid());
 
@@ -52,6 +57,6 @@ int main(int argc, char **argv) {
 	values.push_back("data1");
 	values.push_back("data2");
 	values.push_back("data3");
-	client.put("node1:0001", values);
+	client.put(argv[1], values);
 
 }

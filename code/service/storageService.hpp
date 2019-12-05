@@ -37,6 +37,7 @@ using myMessage::KeyAndValue;
 using myMessage::StorageInfo;
 using myMessage::ManagerResponse;
 using myMessage::ValueWithVersion;
+using myMessage::Empty;
 
 #define PUT 1
 #define GET 2
@@ -80,5 +81,5 @@ class StorageServer:public MyMessage::Service {
 private:
 	unordered_map<string, val_t> inMemoryStorage;
 public:
-Status Put(ServerContext *ctx, const KeyAndValue *input, ::google::protobuf::Empty*);
+Status Put(ServerContext *ctx, const KeyAndValue *input,  Empty *empty);
 };

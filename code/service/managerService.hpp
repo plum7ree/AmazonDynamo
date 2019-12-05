@@ -38,6 +38,7 @@ using grpc::ClientWriter;
 using myMessage::MyMessage;
 using myMessage::KeyAndValue;
 using myMessage::StorageInfo;
+using myMessage::Empty;
 
 #define _VNODE_SIZE 			30
 #define _PREF_LIST_SIZE 	4
@@ -55,8 +56,8 @@ class ManagerService final: public MyMessage::Service {
 private:
 	HashRing ring = HashRing((size_t)_VNODE_SIZE, (size_t)_PREF_LIST_SIZE);
 public:
-	Status Put(ServerContext *ctx, const KeyAndValue *input, ::google::protobuf::Empty*) override;
-	Status notifyToManager(ServerContext *ctx, const StorageInfo *input, ::google::protobuf::Empty*) override;
+	Status Put(ServerContext *ctx, const KeyAndValue *input, Empty *empty) override;
+	Status notifyToManager(ServerContext *ctx, const StorageInfo *input,  Empty *empty) override;
 	// Status RequestToManager(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::myMessage::ManagerResponse* response);
 	// Status SendDataToManager(::grpc::ClientContext* context, const ::myMessage::ValueWithVersion& request, ::google::protobuf::Empty* response);
 

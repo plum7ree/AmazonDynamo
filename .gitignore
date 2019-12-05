@@ -9,6 +9,9 @@ code/hash/*
 !code/hash/*.h
 !code/hash/*.proto
 
+code/client
+code/storage
+code/manager
 code/conhash
 code/peda*
 code/gdb*

@@ -14,6 +14,7 @@ using namespace std;
 
 using myMessage::MyMessage;
 using myMessage::KeyAndValue;
+using myMessage::Empty;
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -21,6 +22,7 @@ using grpc::ClientReader;
 using grpc::ClientReaderWriter;
 using grpc::ClientWriter;
 using grpc::Status;
+
 
 typedef vector<string> val_t;
 

@@ -1,7 +1,6 @@
 #include "clientService.hpp"
 
 void ClientService::put(string& key, val_t& value) {
-	cout << "11" << endl;
 	KeyAndValue kv;
 	kv.set_key(key);
 	cout << "value[0]" << value[0] <<endl;
@@ -10,11 +9,14 @@ void ClientService::put(string& key, val_t& value) {
 				kv.add_value(value[i]);
 	}
 
-	cout << "11" <<endl;
 	// kv.mutable_value()->CopyFrom(value);
 	ClientContext ctx;
-	Status s =  stub_->Put(&ctx, kv, NULL);
-
-	cout << "11" <<endl;
+	Empty empty;
+	Status s =  stub_->Put(&ctx, kv, &empty);
+	if (s.ok()) {
+      cout << "StorageClient::notifyToManager : notifyToManager rpc succeeded." << std::endl;
+    } else {
+      cout << "StorageClient::notifyToManager : notifyToManager rpc failed." << std::endl;
+    }
 
 }
