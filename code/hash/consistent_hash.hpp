@@ -1,8 +1,4 @@
-#include <string>
-#include <vector>
-#include <map>
-
-using namespace std;
+#include "../type/type.hpp"
 
 //
 // class HashRing
@@ -18,9 +14,6 @@ using namespace std;
 //
 // remove:
 // nodes are distrubted
-
-typedef vector<string> PrefListType;
-typedef map<size_t, string> HashMapType;
 
 
 class HashRing{

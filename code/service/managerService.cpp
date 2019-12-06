@@ -15,13 +15,14 @@ Status ManagerService::Put(ServerContext *ctx, const KeyAndValue *input, Empty *
     cout << *it << ", ";
   }
   cout << endl;
-  //load balancer
+
   val_t value;
   for (auto i=0;i<input->value_size();i++) {
 				value.push_back(input->value(i));
 	}
+  int load_balance_res = rand() % pl.size();
   // server sends to storage
-  ::storageConn[pl[0]].put(k, value);
+  ::storageConn[pl[load_balance_res]].put(k, value, pl);
 
 
   return Status::OK;
@@ -49,7 +50,7 @@ void ManagerService::addNode(string node_ip) {
 
 // ***************** ManagerStub class  *****************
 
-void ManagerStub::put(string k, val_t value){
+void ManagerStub::put(string k, val_t &value, PrefListType &pl){
   ClientContext ctx;
   KeyAndValue kv;
   Empty empty;
@@ -57,5 +58,8 @@ void ManagerStub::put(string k, val_t value){
   for (auto i=0;i<value.size();i++) {
 				kv.add_value(value[i]);
 	}
+  for (auto it=pl.begin();it!=pl.end();it++) {
+    kv.add_preflist(*it);
+  }
 	Status s =  stub_->Put(&ctx, kv, &empty);
 }

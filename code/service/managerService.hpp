@@ -1,6 +1,4 @@
-#include <map>
-#include <string>
-#include <vector>
+
 #include <thread>
 #include <memory>
 
@@ -18,8 +16,8 @@
 #include "message.grpc.pb.h"
 
 #include "../hash/consistent_hash.hpp"
+#include "../type/type.hpp"
 
-using namespace std;
 
 using grpc::Server;
 using grpc::ServerBuilder;
@@ -45,7 +43,6 @@ using myMessage::Empty;
 #define PUT 1
 #define GET 2
 
-typedef vector<string> val_t;
 
 //
 // We use strategy 1. route its request through a generic load balancer that will select a
@@ -74,7 +71,7 @@ public:
 	      : stub_(MyMessage::NewStub(channel)) {
 
 	}
-	void put(string k, val_t v);
+	void put(string k, val_t &v, PrefListType &pl);
 };
 
 

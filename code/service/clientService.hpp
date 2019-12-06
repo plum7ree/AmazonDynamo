@@ -9,6 +9,7 @@
 #include <grpcpp/security/credentials.h>
 
 #include "message.grpc.pb.h"
+#include "../type/type.hpp"
 
 using namespace std;
 
@@ -23,8 +24,6 @@ using grpc::ClientReaderWriter;
 using grpc::ClientWriter;
 using grpc::Status;
 
-
-typedef vector<string> val_t;
 
 class ClientService{
 public:

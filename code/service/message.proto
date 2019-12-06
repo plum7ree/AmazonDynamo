@@ -6,23 +6,25 @@ package myMessage;
 
 service MyMessage {
 
+// client to manager, manager to coordinator
 rpc Put(KeyAndValue) returns (Empty){}
 
+// client from manager, manager from storages
 rpc Get(Key) returns (Value) {}
 
+// storage registers to manager
 rpc notifyToManager(StorageInfo) returns (Empty) {}
 
-/* // storage sends this
-rpc RequestToManager(StorageInfo) returns (ManagerResponse){}
-
-// storage sends this
-rpc SendDataToManager(ValueWithVersion) returns (google.protobuf.Empty) {} */
+// coordinator spread to storages
+rpc Spread(KeyAndValue) returns (Empty) {}
 
 }
 
 message KeyAndValue {
   string key = 1;
   repeated string value = 2;
+  repeated string prefList = 3;
+  int32 vectorClock = 4; // we only need this in Spread()
 }
 
 message Key{
@@ -31,32 +33,13 @@ message Key{
 
 message Value{
   repeated string value = 1;
+  int32 vectorClock = 2;
 }
 
 message StorageInfo{
   string ip = 1;
 }
 
-message ManagerResponse{
-  uint32 type = 1; // either PUT or GET
-  string key = 2;
-  repeated string value = 3;
-  repeated string otherNodes = 4;
-}
-
-message ValueWithVersion{
-  string clock = 1;
-  repeated string value = 2;
-}
-
 message Empty{
 
 }
-
-/* message clientData {
-  int32 ip = 1;
-}
-
-message serverResponse {
-  string res = 1;
-} */

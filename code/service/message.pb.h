@@ -42,7 +42,7 @@ struct TableStruct_message_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::google::protobuf::internal::ParseTable schema[7]
+  static const ::google::protobuf::internal::ParseTable schema[5]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
@@ -59,28 +59,20 @@ extern KeyDefaultTypeInternal _Key_default_instance_;
 class KeyAndValue;
 class KeyAndValueDefaultTypeInternal;
 extern KeyAndValueDefaultTypeInternal _KeyAndValue_default_instance_;
-class ManagerResponse;
-class ManagerResponseDefaultTypeInternal;
-extern ManagerResponseDefaultTypeInternal _ManagerResponse_default_instance_;
 class StorageInfo;
 class StorageInfoDefaultTypeInternal;
 extern StorageInfoDefaultTypeInternal _StorageInfo_default_instance_;
 class Value;
 class ValueDefaultTypeInternal;
 extern ValueDefaultTypeInternal _Value_default_instance_;
-class ValueWithVersion;
-class ValueWithVersionDefaultTypeInternal;
-extern ValueWithVersionDefaultTypeInternal _ValueWithVersion_default_instance_;
 }  // namespace myMessage
 namespace google {
 namespace protobuf {
 template<> ::myMessage::Empty* Arena::CreateMaybeMessage<::myMessage::Empty>(Arena*);
 template<> ::myMessage::Key* Arena::CreateMaybeMessage<::myMessage::Key>(Arena*);
 template<> ::myMessage::KeyAndValue* Arena::CreateMaybeMessage<::myMessage::KeyAndValue>(Arena*);
-template<> ::myMessage::ManagerResponse* Arena::CreateMaybeMessage<::myMessage::ManagerResponse>(Arena*);
 template<> ::myMessage::StorageInfo* Arena::CreateMaybeMessage<::myMessage::StorageInfo>(Arena*);
 template<> ::myMessage::Value* Arena::CreateMaybeMessage<::myMessage::Value>(Arena*);
-template<> ::myMessage::ValueWithVersion* Arena::CreateMaybeMessage<::myMessage::ValueWithVersion>(Arena*);
 }  // namespace protobuf
 }  // namespace google
 namespace myMessage {
@@ -204,6 +196,28 @@ class KeyAndValue final :
   const ::google::protobuf::RepeatedPtrField<::std::string>& value() const;
   ::google::protobuf::RepeatedPtrField<::std::string>* mutable_value();
 
+  // repeated string prefList = 3;
+  int preflist_size() const;
+  void clear_preflist();
+  static const int kPrefListFieldNumber = 3;
+  const ::std::string& preflist(int index) const;
+  ::std::string* mutable_preflist(int index);
+  void set_preflist(int index, const ::std::string& value);
+  #if LANG_CXX11
+  void set_preflist(int index, ::std::string&& value);
+  #endif
+  void set_preflist(int index, const char* value);
+  void set_preflist(int index, const char* value, size_t size);
+  ::std::string* add_preflist();
+  void add_preflist(const ::std::string& value);
+  #if LANG_CXX11
+  void add_preflist(::std::string&& value);
+  #endif
+  void add_preflist(const char* value);
+  void add_preflist(const char* value, size_t size);
+  const ::google::protobuf::RepeatedPtrField<::std::string>& preflist() const;
+  ::google::protobuf::RepeatedPtrField<::std::string>* mutable_preflist();
+
   // string key = 1;
   void clear_key();
   static const int kKeyFieldNumber = 1;
@@ -218,13 +232,21 @@ class KeyAndValue final :
   ::std::string* release_key();
   void set_allocated_key(::std::string* key);
 
+  // int32 vectorClock = 4;
+  void clear_vectorclock();
+  static const int kVectorClockFieldNumber = 4;
+  ::google::protobuf::int32 vectorclock() const;
+  void set_vectorclock(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:myMessage.KeyAndValue)
  private:
   class HasBitSetters;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField<::std::string> value_;
+  ::google::protobuf::RepeatedPtrField<::std::string> preflist_;
   ::google::protobuf::internal::ArenaStringPtr key_;
+  ::google::protobuf::int32 vectorclock_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
@@ -467,12 +489,19 @@ class Value final :
   const ::google::protobuf::RepeatedPtrField<::std::string>& value() const;
   ::google::protobuf::RepeatedPtrField<::std::string>* mutable_value();
 
+  // int32 vectorClock = 2;
+  void clear_vectorclock();
+  static const int kVectorClockFieldNumber = 2;
+  ::google::protobuf::int32 vectorclock() const;
+  void set_vectorclock(::google::protobuf::int32 value);
+
   // @@protoc_insertion_point(class_scope:myMessage.Value)
  private:
   class HasBitSetters;
 
   ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
   ::google::protobuf::RepeatedPtrField<::std::string> value_;
+  ::google::protobuf::int32 vectorclock_;
   mutable ::google::protobuf::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_message_2eproto;
 };
@@ -598,322 +627,6 @@ class StorageInfo final :
 };
 // -------------------------------------------------------------------
 
-class ManagerResponse final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:myMessage.ManagerResponse) */ {
- public:
-  ManagerResponse();
-  virtual ~ManagerResponse();
-
-  ManagerResponse(const ManagerResponse& from);
-
-  inline ManagerResponse& operator=(const ManagerResponse& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  ManagerResponse(ManagerResponse&& from) noexcept
-    : ManagerResponse() {
-    *this = ::std::move(from);
-  }
-
-  inline ManagerResponse& operator=(ManagerResponse&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return default_instance().GetDescriptor();
-  }
-  static const ManagerResponse& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ManagerResponse* internal_default_instance() {
-    return reinterpret_cast<const ManagerResponse*>(
-               &_ManagerResponse_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    4;
-
-  void Swap(ManagerResponse* other);
-  friend void swap(ManagerResponse& a, ManagerResponse& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ManagerResponse* New() const final {
-    return CreateMaybeMessage<ManagerResponse>(nullptr);
-  }
-
-  ManagerResponse* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<ManagerResponse>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const ManagerResponse& from);
-  void MergeFrom(const ManagerResponse& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
-  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
-  #else
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(ManagerResponse* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated string value = 3;
-  int value_size() const;
-  void clear_value();
-  static const int kValueFieldNumber = 3;
-  const ::std::string& value(int index) const;
-  ::std::string* mutable_value(int index);
-  void set_value(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_value(int index, ::std::string&& value);
-  #endif
-  void set_value(int index, const char* value);
-  void set_value(int index, const char* value, size_t size);
-  ::std::string* add_value();
-  void add_value(const ::std::string& value);
-  #if LANG_CXX11
-  void add_value(::std::string&& value);
-  #endif
-  void add_value(const char* value);
-  void add_value(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField<::std::string>& value() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* mutable_value();
-
-  // repeated string otherNodes = 4;
-  int othernodes_size() const;
-  void clear_othernodes();
-  static const int kOtherNodesFieldNumber = 4;
-  const ::std::string& othernodes(int index) const;
-  ::std::string* mutable_othernodes(int index);
-  void set_othernodes(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_othernodes(int index, ::std::string&& value);
-  #endif
-  void set_othernodes(int index, const char* value);
-  void set_othernodes(int index, const char* value, size_t size);
-  ::std::string* add_othernodes();
-  void add_othernodes(const ::std::string& value);
-  #if LANG_CXX11
-  void add_othernodes(::std::string&& value);
-  #endif
-  void add_othernodes(const char* value);
-  void add_othernodes(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField<::std::string>& othernodes() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* mutable_othernodes();
-
-  // string key = 2;
-  void clear_key();
-  static const int kKeyFieldNumber = 2;
-  const ::std::string& key() const;
-  void set_key(const ::std::string& value);
-  #if LANG_CXX11
-  void set_key(::std::string&& value);
-  #endif
-  void set_key(const char* value);
-  void set_key(const char* value, size_t size);
-  ::std::string* mutable_key();
-  ::std::string* release_key();
-  void set_allocated_key(::std::string* key);
-
-  // uint32 type = 1;
-  void clear_type();
-  static const int kTypeFieldNumber = 1;
-  ::google::protobuf::uint32 type() const;
-  void set_type(::google::protobuf::uint32 value);
-
-  // @@protoc_insertion_point(class_scope:myMessage.ManagerResponse)
- private:
-  class HasBitSetters;
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField<::std::string> value_;
-  ::google::protobuf::RepeatedPtrField<::std::string> othernodes_;
-  ::google::protobuf::internal::ArenaStringPtr key_;
-  ::google::protobuf::uint32 type_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_message_2eproto;
-};
-// -------------------------------------------------------------------
-
-class ValueWithVersion final :
-    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:myMessage.ValueWithVersion) */ {
- public:
-  ValueWithVersion();
-  virtual ~ValueWithVersion();
-
-  ValueWithVersion(const ValueWithVersion& from);
-
-  inline ValueWithVersion& operator=(const ValueWithVersion& from) {
-    CopyFrom(from);
-    return *this;
-  }
-  #if LANG_CXX11
-  ValueWithVersion(ValueWithVersion&& from) noexcept
-    : ValueWithVersion() {
-    *this = ::std::move(from);
-  }
-
-  inline ValueWithVersion& operator=(ValueWithVersion&& from) noexcept {
-    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
-      if (this != &from) InternalSwap(&from);
-    } else {
-      CopyFrom(from);
-    }
-    return *this;
-  }
-  #endif
-  static const ::google::protobuf::Descriptor* descriptor() {
-    return default_instance().GetDescriptor();
-  }
-  static const ValueWithVersion& default_instance();
-
-  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
-  static inline const ValueWithVersion* internal_default_instance() {
-    return reinterpret_cast<const ValueWithVersion*>(
-               &_ValueWithVersion_default_instance_);
-  }
-  static constexpr int kIndexInFileMessages =
-    5;
-
-  void Swap(ValueWithVersion* other);
-  friend void swap(ValueWithVersion& a, ValueWithVersion& b) {
-    a.Swap(&b);
-  }
-
-  // implements Message ----------------------------------------------
-
-  inline ValueWithVersion* New() const final {
-    return CreateMaybeMessage<ValueWithVersion>(nullptr);
-  }
-
-  ValueWithVersion* New(::google::protobuf::Arena* arena) const final {
-    return CreateMaybeMessage<ValueWithVersion>(arena);
-  }
-  void CopyFrom(const ::google::protobuf::Message& from) final;
-  void MergeFrom(const ::google::protobuf::Message& from) final;
-  void CopyFrom(const ValueWithVersion& from);
-  void MergeFrom(const ValueWithVersion& from);
-  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
-  bool IsInitialized() const final;
-
-  size_t ByteSizeLong() const final;
-  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
-  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
-  #else
-  bool MergePartialFromCodedStream(
-      ::google::protobuf::io::CodedInputStream* input) final;
-  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
-  void SerializeWithCachedSizes(
-      ::google::protobuf::io::CodedOutputStream* output) const final;
-  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
-      ::google::protobuf::uint8* target) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
-
-  private:
-  void SharedCtor();
-  void SharedDtor();
-  void SetCachedSize(int size) const final;
-  void InternalSwap(ValueWithVersion* other);
-  private:
-  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
-    return nullptr;
-  }
-  inline void* MaybeArenaPtr() const {
-    return nullptr;
-  }
-  public:
-
-  ::google::protobuf::Metadata GetMetadata() const final;
-
-  // nested types ----------------------------------------------------
-
-  // accessors -------------------------------------------------------
-
-  // repeated string value = 2;
-  int value_size() const;
-  void clear_value();
-  static const int kValueFieldNumber = 2;
-  const ::std::string& value(int index) const;
-  ::std::string* mutable_value(int index);
-  void set_value(int index, const ::std::string& value);
-  #if LANG_CXX11
-  void set_value(int index, ::std::string&& value);
-  #endif
-  void set_value(int index, const char* value);
-  void set_value(int index, const char* value, size_t size);
-  ::std::string* add_value();
-  void add_value(const ::std::string& value);
-  #if LANG_CXX11
-  void add_value(::std::string&& value);
-  #endif
-  void add_value(const char* value);
-  void add_value(const char* value, size_t size);
-  const ::google::protobuf::RepeatedPtrField<::std::string>& value() const;
-  ::google::protobuf::RepeatedPtrField<::std::string>* mutable_value();
-
-  // string clock = 1;
-  void clear_clock();
-  static const int kClockFieldNumber = 1;
-  const ::std::string& clock() const;
-  void set_clock(const ::std::string& value);
-  #if LANG_CXX11
-  void set_clock(::std::string&& value);
-  #endif
-  void set_clock(const char* value);
-  void set_clock(const char* value, size_t size);
-  ::std::string* mutable_clock();
-  ::std::string* release_clock();
-  void set_allocated_clock(::std::string* clock);
-
-  // @@protoc_insertion_point(class_scope:myMessage.ValueWithVersion)
- private:
-  class HasBitSetters;
-
-  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
-  ::google::protobuf::RepeatedPtrField<::std::string> value_;
-  ::google::protobuf::internal::ArenaStringPtr clock_;
-  mutable ::google::protobuf::internal::CachedSize _cached_size_;
-  friend struct ::TableStruct_message_2eproto;
-};
-// -------------------------------------------------------------------
-
 class Empty final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:myMessage.Empty) */ {
  public:
@@ -952,7 +665,7 @@ class Empty final :
                &_Empty_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    6;
+    4;
 
   void Swap(Empty* other);
   friend void swap(Empty& a, Empty& b) {
@@ -1150,6 +863,89 @@ KeyAndValue::mutable_value() {
   return &value_;
 }
 
+// repeated string prefList = 3;
+inline int KeyAndValue::preflist_size() const {
+  return preflist_.size();
+}
+inline void KeyAndValue::clear_preflist() {
+  preflist_.Clear();
+}
+inline const ::std::string& KeyAndValue::preflist(int index) const {
+  // @@protoc_insertion_point(field_get:myMessage.KeyAndValue.prefList)
+  return preflist_.Get(index);
+}
+inline ::std::string* KeyAndValue::mutable_preflist(int index) {
+  // @@protoc_insertion_point(field_mutable:myMessage.KeyAndValue.prefList)
+  return preflist_.Mutable(index);
+}
+inline void KeyAndValue::set_preflist(int index, const ::std::string& value) {
+  // @@protoc_insertion_point(field_set:myMessage.KeyAndValue.prefList)
+  preflist_.Mutable(index)->assign(value);
+}
+#if LANG_CXX11
+inline void KeyAndValue::set_preflist(int index, ::std::string&& value) {
+  // @@protoc_insertion_point(field_set:myMessage.KeyAndValue.prefList)
+  preflist_.Mutable(index)->assign(std::move(value));
+}
+#endif
+inline void KeyAndValue::set_preflist(int index, const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  preflist_.Mutable(index)->assign(value);
+  // @@protoc_insertion_point(field_set_char:myMessage.KeyAndValue.prefList)
+}
+inline void KeyAndValue::set_preflist(int index, const char* value, size_t size) {
+  preflist_.Mutable(index)->assign(
+    reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_set_pointer:myMessage.KeyAndValue.prefList)
+}
+inline ::std::string* KeyAndValue::add_preflist() {
+  // @@protoc_insertion_point(field_add_mutable:myMessage.KeyAndValue.prefList)
+  return preflist_.Add();
+}
+inline void KeyAndValue::add_preflist(const ::std::string& value) {
+  preflist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add:myMessage.KeyAndValue.prefList)
+}
+#if LANG_CXX11
+inline void KeyAndValue::add_preflist(::std::string&& value) {
+  preflist_.Add(std::move(value));
+  // @@protoc_insertion_point(field_add:myMessage.KeyAndValue.prefList)
+}
+#endif
+inline void KeyAndValue::add_preflist(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  preflist_.Add()->assign(value);
+  // @@protoc_insertion_point(field_add_char:myMessage.KeyAndValue.prefList)
+}
+inline void KeyAndValue::add_preflist(const char* value, size_t size) {
+  preflist_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  // @@protoc_insertion_point(field_add_pointer:myMessage.KeyAndValue.prefList)
+}
+inline const ::google::protobuf::RepeatedPtrField<::std::string>&
+KeyAndValue::preflist() const {
+  // @@protoc_insertion_point(field_list:myMessage.KeyAndValue.prefList)
+  return preflist_;
+}
+inline ::google::protobuf::RepeatedPtrField<::std::string>*
+KeyAndValue::mutable_preflist() {
+  // @@protoc_insertion_point(field_mutable_list:myMessage.KeyAndValue.prefList)
+  return &preflist_;
+}
+
+// int32 vectorClock = 4;
+inline void KeyAndValue::clear_vectorclock() {
+  vectorclock_ = 0;
+}
+inline ::google::protobuf::int32 KeyAndValue::vectorclock() const {
+  // @@protoc_insertion_point(field_get:myMessage.KeyAndValue.vectorClock)
+  return vectorclock_;
+}
+inline void KeyAndValue::set_vectorclock(::google::protobuf::int32 value) {
+  
+  vectorclock_ = value;
+  // @@protoc_insertion_point(field_set:myMessage.KeyAndValue.vectorClock)
+}
+
 // -------------------------------------------------------------------
 
 // Key
@@ -1280,6 +1076,20 @@ Value::mutable_value() {
   return &value_;
 }
 
+// int32 vectorClock = 2;
+inline void Value::clear_vectorclock() {
+  vectorclock_ = 0;
+}
+inline ::google::protobuf::int32 Value::vectorclock() const {
+  // @@protoc_insertion_point(field_get:myMessage.Value.vectorClock)
+  return vectorclock_;
+}
+inline void Value::set_vectorclock(::google::protobuf::int32 value) {
+  
+  vectorclock_ = value;
+  // @@protoc_insertion_point(field_set:myMessage.Value.vectorClock)
+}
+
 // -------------------------------------------------------------------
 
 // StorageInfo
@@ -1339,350 +1149,11 @@ inline void StorageInfo::set_allocated_ip(::std::string* ip) {
 
 // -------------------------------------------------------------------
 
-// ManagerResponse
-
-// uint32 type = 1;
-inline void ManagerResponse::clear_type() {
-  type_ = 0u;
-}
-inline ::google::protobuf::uint32 ManagerResponse::type() const {
-  // @@protoc_insertion_point(field_get:myMessage.ManagerResponse.type)
-  return type_;
-}
-inline void ManagerResponse::set_type(::google::protobuf::uint32 value) {
-  
-  type_ = value;
-  // @@protoc_insertion_point(field_set:myMessage.ManagerResponse.type)
-}
-
-// string key = 2;
-inline void ManagerResponse::clear_key() {
-  key_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& ManagerResponse::key() const {
-  // @@protoc_insertion_point(field_get:myMessage.ManagerResponse.key)
-  return key_.GetNoArena();
-}
-inline void ManagerResponse::set_key(const ::std::string& value) {
-  
-  key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:myMessage.ManagerResponse.key)
-}
-#if LANG_CXX11
-inline void ManagerResponse::set_key(::std::string&& value) {
-  
-  key_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:myMessage.ManagerResponse.key)
-}
-#endif
-inline void ManagerResponse::set_key(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:myMessage.ManagerResponse.key)
-}
-inline void ManagerResponse::set_key(const char* value, size_t size) {
-  
-  key_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:myMessage.ManagerResponse.key)
-}
-inline ::std::string* ManagerResponse::mutable_key() {
-  
-  // @@protoc_insertion_point(field_mutable:myMessage.ManagerResponse.key)
-  return key_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ManagerResponse::release_key() {
-  // @@protoc_insertion_point(field_release:myMessage.ManagerResponse.key)
-  
-  return key_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ManagerResponse::set_allocated_key(::std::string* key) {
-  if (key != nullptr) {
-    
-  } else {
-    
-  }
-  key_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), key);
-  // @@protoc_insertion_point(field_set_allocated:myMessage.ManagerResponse.key)
-}
-
-// repeated string value = 3;
-inline int ManagerResponse::value_size() const {
-  return value_.size();
-}
-inline void ManagerResponse::clear_value() {
-  value_.Clear();
-}
-inline const ::std::string& ManagerResponse::value(int index) const {
-  // @@protoc_insertion_point(field_get:myMessage.ManagerResponse.value)
-  return value_.Get(index);
-}
-inline ::std::string* ManagerResponse::mutable_value(int index) {
-  // @@protoc_insertion_point(field_mutable:myMessage.ManagerResponse.value)
-  return value_.Mutable(index);
-}
-inline void ManagerResponse::set_value(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:myMessage.ManagerResponse.value)
-  value_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void ManagerResponse::set_value(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:myMessage.ManagerResponse.value)
-  value_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void ManagerResponse::set_value(int index, const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  value_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:myMessage.ManagerResponse.value)
-}
-inline void ManagerResponse::set_value(int index, const char* value, size_t size) {
-  value_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:myMessage.ManagerResponse.value)
-}
-inline ::std::string* ManagerResponse::add_value() {
-  // @@protoc_insertion_point(field_add_mutable:myMessage.ManagerResponse.value)
-  return value_.Add();
-}
-inline void ManagerResponse::add_value(const ::std::string& value) {
-  value_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:myMessage.ManagerResponse.value)
-}
-#if LANG_CXX11
-inline void ManagerResponse::add_value(::std::string&& value) {
-  value_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:myMessage.ManagerResponse.value)
-}
-#endif
-inline void ManagerResponse::add_value(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  value_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:myMessage.ManagerResponse.value)
-}
-inline void ManagerResponse::add_value(const char* value, size_t size) {
-  value_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:myMessage.ManagerResponse.value)
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>&
-ManagerResponse::value() const {
-  // @@protoc_insertion_point(field_list:myMessage.ManagerResponse.value)
-  return value_;
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>*
-ManagerResponse::mutable_value() {
-  // @@protoc_insertion_point(field_mutable_list:myMessage.ManagerResponse.value)
-  return &value_;
-}
-
-// repeated string otherNodes = 4;
-inline int ManagerResponse::othernodes_size() const {
-  return othernodes_.size();
-}
-inline void ManagerResponse::clear_othernodes() {
-  othernodes_.Clear();
-}
-inline const ::std::string& ManagerResponse::othernodes(int index) const {
-  // @@protoc_insertion_point(field_get:myMessage.ManagerResponse.otherNodes)
-  return othernodes_.Get(index);
-}
-inline ::std::string* ManagerResponse::mutable_othernodes(int index) {
-  // @@protoc_insertion_point(field_mutable:myMessage.ManagerResponse.otherNodes)
-  return othernodes_.Mutable(index);
-}
-inline void ManagerResponse::set_othernodes(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:myMessage.ManagerResponse.otherNodes)
-  othernodes_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void ManagerResponse::set_othernodes(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:myMessage.ManagerResponse.otherNodes)
-  othernodes_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void ManagerResponse::set_othernodes(int index, const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  othernodes_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:myMessage.ManagerResponse.otherNodes)
-}
-inline void ManagerResponse::set_othernodes(int index, const char* value, size_t size) {
-  othernodes_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:myMessage.ManagerResponse.otherNodes)
-}
-inline ::std::string* ManagerResponse::add_othernodes() {
-  // @@protoc_insertion_point(field_add_mutable:myMessage.ManagerResponse.otherNodes)
-  return othernodes_.Add();
-}
-inline void ManagerResponse::add_othernodes(const ::std::string& value) {
-  othernodes_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:myMessage.ManagerResponse.otherNodes)
-}
-#if LANG_CXX11
-inline void ManagerResponse::add_othernodes(::std::string&& value) {
-  othernodes_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:myMessage.ManagerResponse.otherNodes)
-}
-#endif
-inline void ManagerResponse::add_othernodes(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  othernodes_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:myMessage.ManagerResponse.otherNodes)
-}
-inline void ManagerResponse::add_othernodes(const char* value, size_t size) {
-  othernodes_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:myMessage.ManagerResponse.otherNodes)
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>&
-ManagerResponse::othernodes() const {
-  // @@protoc_insertion_point(field_list:myMessage.ManagerResponse.otherNodes)
-  return othernodes_;
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>*
-ManagerResponse::mutable_othernodes() {
-  // @@protoc_insertion_point(field_mutable_list:myMessage.ManagerResponse.otherNodes)
-  return &othernodes_;
-}
-
-// -------------------------------------------------------------------
-
-// ValueWithVersion
-
-// string clock = 1;
-inline void ValueWithVersion::clear_clock() {
-  clock_.ClearToEmptyNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline const ::std::string& ValueWithVersion::clock() const {
-  // @@protoc_insertion_point(field_get:myMessage.ValueWithVersion.clock)
-  return clock_.GetNoArena();
-}
-inline void ValueWithVersion::set_clock(const ::std::string& value) {
-  
-  clock_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), value);
-  // @@protoc_insertion_point(field_set:myMessage.ValueWithVersion.clock)
-}
-#if LANG_CXX11
-inline void ValueWithVersion::set_clock(::std::string&& value) {
-  
-  clock_.SetNoArena(
-    &::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
-  // @@protoc_insertion_point(field_set_rvalue:myMessage.ValueWithVersion.clock)
-}
-#endif
-inline void ValueWithVersion::set_clock(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  
-  clock_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
-  // @@protoc_insertion_point(field_set_char:myMessage.ValueWithVersion.clock)
-}
-inline void ValueWithVersion::set_clock(const char* value, size_t size) {
-  
-  clock_.SetNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(),
-      ::std::string(reinterpret_cast<const char*>(value), size));
-  // @@protoc_insertion_point(field_set_pointer:myMessage.ValueWithVersion.clock)
-}
-inline ::std::string* ValueWithVersion::mutable_clock() {
-  
-  // @@protoc_insertion_point(field_mutable:myMessage.ValueWithVersion.clock)
-  return clock_.MutableNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline ::std::string* ValueWithVersion::release_clock() {
-  // @@protoc_insertion_point(field_release:myMessage.ValueWithVersion.clock)
-  
-  return clock_.ReleaseNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited());
-}
-inline void ValueWithVersion::set_allocated_clock(::std::string* clock) {
-  if (clock != nullptr) {
-    
-  } else {
-    
-  }
-  clock_.SetAllocatedNoArena(&::google::protobuf::internal::GetEmptyStringAlreadyInited(), clock);
-  // @@protoc_insertion_point(field_set_allocated:myMessage.ValueWithVersion.clock)
-}
-
-// repeated string value = 2;
-inline int ValueWithVersion::value_size() const {
-  return value_.size();
-}
-inline void ValueWithVersion::clear_value() {
-  value_.Clear();
-}
-inline const ::std::string& ValueWithVersion::value(int index) const {
-  // @@protoc_insertion_point(field_get:myMessage.ValueWithVersion.value)
-  return value_.Get(index);
-}
-inline ::std::string* ValueWithVersion::mutable_value(int index) {
-  // @@protoc_insertion_point(field_mutable:myMessage.ValueWithVersion.value)
-  return value_.Mutable(index);
-}
-inline void ValueWithVersion::set_value(int index, const ::std::string& value) {
-  // @@protoc_insertion_point(field_set:myMessage.ValueWithVersion.value)
-  value_.Mutable(index)->assign(value);
-}
-#if LANG_CXX11
-inline void ValueWithVersion::set_value(int index, ::std::string&& value) {
-  // @@protoc_insertion_point(field_set:myMessage.ValueWithVersion.value)
-  value_.Mutable(index)->assign(std::move(value));
-}
-#endif
-inline void ValueWithVersion::set_value(int index, const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  value_.Mutable(index)->assign(value);
-  // @@protoc_insertion_point(field_set_char:myMessage.ValueWithVersion.value)
-}
-inline void ValueWithVersion::set_value(int index, const char* value, size_t size) {
-  value_.Mutable(index)->assign(
-    reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_set_pointer:myMessage.ValueWithVersion.value)
-}
-inline ::std::string* ValueWithVersion::add_value() {
-  // @@protoc_insertion_point(field_add_mutable:myMessage.ValueWithVersion.value)
-  return value_.Add();
-}
-inline void ValueWithVersion::add_value(const ::std::string& value) {
-  value_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add:myMessage.ValueWithVersion.value)
-}
-#if LANG_CXX11
-inline void ValueWithVersion::add_value(::std::string&& value) {
-  value_.Add(std::move(value));
-  // @@protoc_insertion_point(field_add:myMessage.ValueWithVersion.value)
-}
-#endif
-inline void ValueWithVersion::add_value(const char* value) {
-  GOOGLE_DCHECK(value != nullptr);
-  value_.Add()->assign(value);
-  // @@protoc_insertion_point(field_add_char:myMessage.ValueWithVersion.value)
-}
-inline void ValueWithVersion::add_value(const char* value, size_t size) {
-  value_.Add()->assign(reinterpret_cast<const char*>(value), size);
-  // @@protoc_insertion_point(field_add_pointer:myMessage.ValueWithVersion.value)
-}
-inline const ::google::protobuf::RepeatedPtrField<::std::string>&
-ValueWithVersion::value() const {
-  // @@protoc_insertion_point(field_list:myMessage.ValueWithVersion.value)
-  return value_;
-}
-inline ::google::protobuf::RepeatedPtrField<::std::string>*
-ValueWithVersion::mutable_value() {
-  // @@protoc_insertion_point(field_mutable_list:myMessage.ValueWithVersion.value)
-  return &value_;
-}
-
-// -------------------------------------------------------------------
-
 // Empty
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
-// -------------------------------------------------------------------
-
-// -------------------------------------------------------------------
-
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

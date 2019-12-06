@@ -9,6 +9,8 @@ code/hash/*
 !code/hash/*.h
 !code/hash/*.proto
 
+!code/type/*.hpp
+
 code/client
 code/storage
 code/manager

@@ -37,6 +37,7 @@ void GTStoreStorage::init() {
 	builder.RegisterService(&storageServer);
 	std::unique_ptr<Server> server(builder.BuildAndStart());
 	std::cout << "Storage Server listening on " << server_address << std::endl;
+	storageServer.setIP(server_address);
 	pthread_mutex_unlock(&_lock);
 	pthread_cond_signal(&cond);
 	// ::_ready = true;
