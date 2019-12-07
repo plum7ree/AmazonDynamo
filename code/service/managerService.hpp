@@ -68,4 +68,4 @@ public:
 };
 
 
-extern map<string, ManagerStub> storageConn;
+//extern map<string, ManagerStub> storageConn;

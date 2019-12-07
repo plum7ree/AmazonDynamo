@@ -2,7 +2,7 @@
 
 
 
-map<string,ManagerStub> storageConn;
+static map<string,ManagerStub> storageConn;
 
 // ***************** managerService class  *****************
 

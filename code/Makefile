@@ -34,7 +34,7 @@ storage: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_P
 client: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/clientService.o $(TYPE_PATH)/helper.o client.o
 	$(CC) $^ $(LDFLAGS) -o client
 
-test_app :  $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o client.o test_app.o
+test_app :  $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/managerService.o $(PROTOS_PATH)/storageService.o $(HASH_PATH)/consistent_hash.o $(TYPE_PATH)/helper.o $(PROTOS_PATH)/clientService.o client.o test_app.o
 	$(CC) $^ $(LDFLAGS) -o test_app
 
 con_hash: hash/consistent_hash.cpp

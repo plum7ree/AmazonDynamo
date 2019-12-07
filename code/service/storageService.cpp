@@ -3,7 +3,7 @@
 
 
 StorageServer server;
-map<string,StorageClient> storageConn; // for send k,v to other storage.
+static map<string,StorageClient> storageConn; // for send k,v to other storage.
 
 // ********************** StorageCleint**********************
 // send StorageInfo to Manager

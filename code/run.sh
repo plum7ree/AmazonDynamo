@@ -1,8 +1,8 @@
 #/bin/bash
 # protoc -I=$SRC_DIR --cpp_out=$DST_DIR $SRC_DIR/addressbook.proto
 
-make clean
-make
+# make clean
+# make
 
 # Launch the GTStore Manager
 ./manager &

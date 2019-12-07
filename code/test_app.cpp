@@ -1,9 +1,10 @@
 #include "gtstore.hpp"
+#include "service/clientService.hpp"
 
 void single_set_get(int client_id) {
 	cout << "Testing single set-get for GTStore by client " << client_id << ".\n";
 
-  GTStoreClient client;
+    GTStoreClient client;
 	client.init(client_id);
 
 	string key = to_string(client_id);
