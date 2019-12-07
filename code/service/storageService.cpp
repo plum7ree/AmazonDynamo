@@ -1,5 +1,7 @@
 #include "storageService.hpp"
 
+
+
 StorageServer server;
 map<string,StorageClient> storageConn; // for send k,v to other storage.
 
@@ -25,9 +27,7 @@ void StorageClient::spread(string k, val_t value, int32_t vectorClock) {
   KeyAndValue kv;
   Empty empty;
   kv.set_key(k);
-  for (auto i=0;i<value.size();i++) {
-				kv.add_value(value[i]);
-	}
+  _set_msg_value(&kv, value);
   kv.set_vectorclock(vectorClock);
   cout << "StorageClient::spread()" << endl;
   Status s =  stub_->Spread(&ctx, kv, &empty);
@@ -48,17 +48,12 @@ void StorageClient::spread(string k, val_t value, int32_t vectorClock) {
 Status StorageServer::Put(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) {
   string k = input->key();
   val_t value;
-  for (auto i=0;i<input->value_size();i++) {
-				value.push_back(input->value(i));
-	}
+  _get_value_from_msg(value, input);
   int32_t vectorClock = storeValue(k, value, -1);
-  cout << "StorageServer::Put value stored! k: " << k << " v[0]: " << value[0] << " vclock: " << vectorClock << endl;
-
+  cout << "StorageServer::Put value stored! k: " << k << " v[0]: " << value[0] << " size: " << value.size() << " vclock: " << vectorClock << endl;
 
   PrefListType pl;
-  for (auto i=0;i<input->preflist_size();i++) {
-    pl.push_back(input->preflist(i));
-  }
+  _get_preflist_from_msg(pl, input);
 
   cout << "StorageServer::Put prefList: ";
   for(auto it=pl.begin();it!=pl.end();it++) {
@@ -82,25 +77,35 @@ Status StorageServer::Put(ServerContext *ctx, const KeyAndValue *input,  Empty *
 Status StorageServer::Spread(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) {
   string k = input->key();
   val_t value;
-  for (auto i=0;i<input->value_size();i++) {
-				value.push_back(input->value(i));
-	}
+  _get_value_from_msg(value, input);
   int32_t vclock = input->vectorclock();
   storeValue(k,value,vclock);
   cout << "StorageServer::Spread value stored! k: " << k << " v[0]: " << value[0] << " vclock: " << vclock << endl;
-  string TODO = "TODO: send response to coordinator!";
+  string TODO = "TODO: send 'response' to coordinator!";
 
 
   return Status::OK;
+}
+
+Status StorageServer::Get(ServerContext *ctx, const Key *input, Value *value) {
+  string k = input->key();
+  if(inMemoryStorage.count(k)) {
+    final_val_t fv = inMemoryStorage[k];
+    value->set_vectorclock(fv.vectorClock);
+    _set_msg_value(value, fv.value);
+    cout << "StorageServer::Get sending to manager k: " << k << " v[0]: " << fv.value[0] << " size: " << fv.value.size() << " vclock: " << fv.vectorClock << endl;
+    return Status::OK;
+  }
+  return Status(StatusCode::NOT_FOUND, "");
 }
 
 int32_t StorageServer::storeValue(string k, val_t v, int32_t vectorClock) {
   int32_t vclock = 0;
   if (vectorClock < 0) { // from PUT
     if (inMemoryStorage.count(k)){ vclock = inMemoryStorage[k].vectorClock + 1;  }
-    inMemoryStorage[k] = {vclock, v};
+    inMemoryStorage[k] = {vclock, v, 0};
   } else { // from Spread
-    inMemoryStorage[k] = {vectorClock, v};
+    inMemoryStorage[k] = {vectorClock, v, 0};
   }
 
   return vclock;

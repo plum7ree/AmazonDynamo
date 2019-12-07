@@ -1,4 +1,4 @@
-#include "../type/type.hpp"
+#include "../type/helper.hpp"
 
 //
 // class HashRing

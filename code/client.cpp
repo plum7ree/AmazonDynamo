@@ -18,8 +18,7 @@ void GTStoreClient::init(int id) {
 val_t GTStoreClient::get(string key) {
 
 	cout << "Inside GTStoreClient::get() for client: " << client_id << " key: " << key << "\n";
-	val_t value;
-	// Get the value!
+	val_t value = cls.get(key);
 	return value;
 }
 
@@ -53,10 +52,44 @@ int main(int argc, char **argv) {
 	GTStoreClient client;
 	client.init(getpid());
 
+	// string key = argv[1];
+	string key = "A";
 	vector<string> values;
-	values.push_back("data1");
-	values.push_back("data2");
-	values.push_back("data3");
-	client.put(argv[1], values);
+	values.push_back("a1");
+	values.push_back("a2");
+	values.push_back("a3");
+	client.put(key, values);
+
+	key = "B";
+	values.clear();
+	values.push_back("b1");
+	values.push_back("b2");
+	values.push_back("b3");
+	client.put(key, values);
+
+	sleep(2);
+	key = "A";
+	val_t v = client.get(key);
+	cout << "key: " << key << endl << "val: ";
+	for(auto it=v.begin();it!=v.end();it++) {
+		cout << *it << ", ";
+	}
+	cout <<endl;
+
+	key = "B";
+	v = client.get(key);
+	cout << "key: " << key << endl << "val: ";
+	for(auto it=v.begin();it!=v.end();it++) {
+		cout << *it << ", ";
+	}
+	cout <<endl;
+
+	// key = "C";
+	// v = client.get(key);
+	// cout << "key: " << v << endl << "val: ";
+	// for(auto it=v.begin();it!=v.end();it++) {
+	// 	cout << *it << ", ";
+	// }
+	// cout <<endl;
 
 }

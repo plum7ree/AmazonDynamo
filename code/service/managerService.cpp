@@ -1,4 +1,7 @@
 #include "managerService.hpp"
+
+
+
 map<string,ManagerStub> storageConn;
 
 // ***************** managerService class  *****************
@@ -17,15 +20,46 @@ Status ManagerService::Put(ServerContext *ctx, const KeyAndValue *input, Empty *
   cout << endl;
 
   val_t value;
-  for (auto i=0;i<input->value_size();i++) {
-				value.push_back(input->value(i));
-	}
+  _get_value_from_msg(value, input);
   int load_balance_res = rand() % pl.size();
   // server sends to storage
   ::storageConn[pl[load_balance_res]].put(k, value, pl);
 
 
   return Status::OK;
+}
+
+Status ManagerService::Get(ServerContext *ctx, const Key *input, Value *value) {
+  string k = input->key();
+  PrefListType pl = ring.getPrefList(k);
+  final_val_t fv;
+  final_val_t recent_val;
+  recent_val.vectorClock = -1;
+  vector<string> needToUpdate;
+
+  for (auto it=pl.begin(); it != pl.end(); it++) {
+    fv = ::storageConn[*it].get(k);
+    if(!fv.empty && (fv.vectorClock > recent_val.vectorClock)) {
+      recent_val = fv;
+    } else {
+      needToUpdate.push_back(*it);
+    }
+  }
+
+ // TODO:
+ string TODO = "TODO: create another thread and update storages with 'needToUpdate'";
+
+ //
+
+
+  if(recent_val.vectorClock >= 0) {
+    _set_msg_value(value, recent_val.value);
+
+    return Status::OK;
+  }
+
+  return Status(StatusCode::NOT_FOUND, "");
+
 }
 
 Status ManagerService::notifyToManager(ServerContext *ctx, const StorageInfo *input, Empty *empty) {
@@ -55,11 +89,23 @@ void ManagerStub::put(string k, val_t &value, PrefListType &pl){
   KeyAndValue kv;
   Empty empty;
   kv.set_key(k);
-  for (auto i=0;i<value.size();i++) {
-				kv.add_value(value[i]);
-	}
-  for (auto it=pl.begin();it!=pl.end();it++) {
-    kv.add_preflist(*it);
-  }
+  _set_msg_value(&kv, value);
+  _set_msg_preflist(&kv, pl);
 	Status s =  stub_->Put(&ctx, kv, &empty);
+}
+
+final_val_t ManagerStub::get(string k) {
+  ClientContext ctx;
+  Key key;
+  Value value;
+  key.set_key(k);
+  Status s = stub_->Get(&ctx, key, &value);
+  final_val_t fv;
+  fv.empty = 1;
+  if (s.ok()) {
+    fv.vectorClock = value.vectorclock();
+    _get_value_from_msg(fv.value, (const Value*)&value);
+    fv.empty = 0;
+  }
+  return fv;
 }

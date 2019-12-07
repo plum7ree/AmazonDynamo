@@ -8,6 +8,7 @@ CXXFLAGS = --std=c++11
 PROTOC = protoc
 PROTOS_PATH = ./service
 HASH_PATH = ./hash
+TYPE_PATH = ./type
 GRPC_CPP_PLUGIN = grpc_cpp_plugin
 GRPC_CPP_PLUGIN_PATH ?= `which $(GRPC_CPP_PLUGIN)`
 LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
@@ -24,13 +25,13 @@ SRC = test_app.cpp
 
 all: $(TESTS)
 
-manager: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/managerService.o $(HASH_PATH)/consistent_hash.o  manager.o
+manager: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/managerService.o $(HASH_PATH)/consistent_hash.o $(TYPE_PATH)/helper.o manager.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
-storage: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/storageService.o storage.o
+storage: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/storageService.o $(TYPE_PATH)/helper.o storage.o
 	$(CC) $^ $(LDFLAGS) -o $@
 
-client: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/clientService.o client.o
+client: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/clientService.o $(TYPE_PATH)/helper.o client.o
 	$(CC) $^ $(LDFLAGS) -o client
 
 test_app :  $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o client.o test_app.o
@@ -48,4 +49,4 @@ con_hash: hash/consistent_hash.cpp
 ########################################################
 
 clean:
-	$(RM) *.o $(TESTS) conhash service/*.o hash/*.o manager storage client 
+	$(RM) *.o $(TESTS) conhash service/*.o hash/*.o type/*.o manager storage client

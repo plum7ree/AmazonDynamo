@@ -10,6 +10,8 @@ code/hash/*
 !code/hash/*.proto
 
 !code/type/*.hpp
+!code/type/*.cpp
+
 
 code/client
 code/storage

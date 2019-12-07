@@ -2,20 +2,9 @@
 #include <string>
 #include <vector>
 
-#include <grpc/grpc.h>
-#include <grpcpp/channel.h>
-#include <grpcpp/client_context.h>
-#include <grpcpp/create_channel.h>
-#include <grpcpp/security/credentials.h>
-
-#include "message.grpc.pb.h"
-#include "../type/type.hpp"
+#include "../type/helper.hpp"
 
 using namespace std;
-
-using myMessage::MyMessage;
-using myMessage::KeyAndValue;
-using myMessage::Empty;
 
 using grpc::Channel;
 using grpc::ClientContext;
@@ -23,7 +12,14 @@ using grpc::ClientReader;
 using grpc::ClientReaderWriter;
 using grpc::ClientWriter;
 using grpc::Status;
+using grpc::StatusCode;
 
+using myMessage::MyMessage;
+using myMessage::KeyAndValue;
+using myMessage::StorageInfo;
+using myMessage::Key;
+using myMessage::Value;
+using myMessage::Empty;
 
 class ClientService{
 public:
@@ -32,7 +28,8 @@ public:
 	      : stub_(MyMessage::NewStub(channel)) {
 
 	}
-	void put(string& key, val_t& value);
+	void put(string, val_t);
+	val_t get(string);
 private:
 	std::unique_ptr<MyMessage::Stub> stub_;
 	// std::vector<Feature> feature_list_;
