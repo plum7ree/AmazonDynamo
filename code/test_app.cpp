@@ -1,5 +1,4 @@
 #include "gtstore.hpp"
-#include "service/clientService.hpp"
 
 void single_set_get(int client_id) {
 	cout << "Testing single set-get for GTStore by client " << client_id << ".\n";
