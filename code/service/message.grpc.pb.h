@@ -69,6 +69,14 @@ class MyMessage final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>> PrepareAsyncSpread(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>>(PrepareAsyncSpreadRaw(context, request, cq));
     }
+    // client to manager, manager to coordinator
+    virtual ::grpc::Status PutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::myMessage::Empty* response) = 0;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>> AsyncPutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>>(AsyncPutOneNodeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>> PrepareAsyncPutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>>(PrepareAsyncPutOneNodeRaw(context, request, cq));
+    }
     class experimental_async_interface {
      public:
       virtual ~experimental_async_interface() {}
@@ -84,6 +92,9 @@ class MyMessage final {
       // coordinator spread to storages
       virtual void Spread(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
       virtual void Spread(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      // client to manager, manager to coordinator
+      virtual void PutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
+      virtual void PutOneNode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) = 0;
     };
     virtual class experimental_async_interface* experimental_async() { return nullptr; }
   private:
@@ -95,6 +106,8 @@ class MyMessage final {
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* PrepareAsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* AsyncSpreadRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
     virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* PrepareAsyncSpreadRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* AsyncPutOneNodeRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
+    virtual ::grpc::ClientAsyncResponseReaderInterface< ::myMessage::Empty>* PrepareAsyncPutOneNodeRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) = 0;
   };
   class Stub final : public StubInterface {
    public:
@@ -127,6 +140,13 @@ class MyMessage final {
     std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>> PrepareAsyncSpread(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
       return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>>(PrepareAsyncSpreadRaw(context, request, cq));
     }
+    ::grpc::Status PutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::myMessage::Empty* response) override;
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>> AsyncPutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>>(AsyncPutOneNodeRaw(context, request, cq));
+    }
+    std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>> PrepareAsyncPutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) {
+      return std::unique_ptr< ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>>(PrepareAsyncPutOneNodeRaw(context, request, cq));
+    }
     class experimental_async final :
       public StubInterface::experimental_async_interface {
      public:
@@ -138,6 +158,8 @@ class MyMessage final {
       void notifyToManager(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
       void Spread(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
       void Spread(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
+      void PutOneNode(::grpc::ClientContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
+      void PutOneNode(::grpc::ClientContext* context, const ::grpc::ByteBuffer* request, ::myMessage::Empty* response, std::function<void(::grpc::Status)>) override;
      private:
       friend class Stub;
       explicit experimental_async(Stub* stub): stub_(stub) { }
@@ -157,10 +179,13 @@ class MyMessage final {
     ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* PrepareAsyncnotifyToManagerRaw(::grpc::ClientContext* context, const ::myMessage::StorageInfo& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* AsyncSpreadRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
     ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* PrepareAsyncSpreadRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* AsyncPutOneNodeRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
+    ::grpc::ClientAsyncResponseReader< ::myMessage::Empty>* PrepareAsyncPutOneNodeRaw(::grpc::ClientContext* context, const ::myMessage::KeyAndValue& request, ::grpc::CompletionQueue* cq) override;
     const ::grpc::internal::RpcMethod rpcmethod_Put_;
     const ::grpc::internal::RpcMethod rpcmethod_Get_;
     const ::grpc::internal::RpcMethod rpcmethod_notifyToManager_;
     const ::grpc::internal::RpcMethod rpcmethod_Spread_;
+    const ::grpc::internal::RpcMethod rpcmethod_PutOneNode_;
   };
   static std::unique_ptr<Stub> NewStub(const std::shared_ptr< ::grpc::ChannelInterface>& channel, const ::grpc::StubOptions& options = ::grpc::StubOptions());
 
@@ -176,6 +201,8 @@ class MyMessage final {
     virtual ::grpc::Status notifyToManager(::grpc::ServerContext* context, const ::myMessage::StorageInfo* request, ::myMessage::Empty* response);
     // coordinator spread to storages
     virtual ::grpc::Status Spread(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response);
+    // client to manager, manager to coordinator
+    virtual ::grpc::Status PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response);
   };
   template <class BaseClass>
   class WithAsyncMethod_Put : public BaseClass {
@@ -257,7 +284,27 @@ class MyMessage final {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
-  typedef WithAsyncMethod_Put<WithAsyncMethod_Get<WithAsyncMethod_notifyToManager<WithAsyncMethod_Spread<Service > > > > AsyncService;
+  template <class BaseClass>
+  class WithAsyncMethod_PutOneNode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithAsyncMethod_PutOneNode() {
+      ::grpc::Service::MarkMethodAsync(4);
+    }
+    ~WithAsyncMethod_PutOneNode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPutOneNode(::grpc::ServerContext* context, ::myMessage::KeyAndValue* request, ::grpc::ServerAsyncResponseWriter< ::myMessage::Empty>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  typedef WithAsyncMethod_Put<WithAsyncMethod_Get<WithAsyncMethod_notifyToManager<WithAsyncMethod_Spread<WithAsyncMethod_PutOneNode<Service > > > > > AsyncService;
   template <class BaseClass>
   class ExperimentalWithCallbackMethod_Put : public BaseClass {
    private:
@@ -358,7 +405,32 @@ class MyMessage final {
     }
     virtual void Spread(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
-  typedef ExperimentalWithCallbackMethod_Put<ExperimentalWithCallbackMethod_Get<ExperimentalWithCallbackMethod_notifyToManager<ExperimentalWithCallbackMethod_Spread<Service > > > > ExperimentalCallbackService;
+  template <class BaseClass>
+  class ExperimentalWithCallbackMethod_PutOneNode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    ExperimentalWithCallbackMethod_PutOneNode() {
+      ::grpc::Service::experimental().MarkMethodCallback(4,
+        new ::grpc::internal::CallbackUnaryHandler< ::myMessage::KeyAndValue, ::myMessage::Empty>(
+          [this](::grpc::ServerContext* context,
+                 const ::myMessage::KeyAndValue* request,
+                 ::myMessage::Empty* response,
+                 ::grpc::experimental::ServerCallbackRpcController* controller) {
+                   return this->PutOneNode(context, request, response, controller);
+                 }));
+    }
+    ~ExperimentalWithCallbackMethod_PutOneNode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual void PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+  };
+  typedef ExperimentalWithCallbackMethod_Put<ExperimentalWithCallbackMethod_Get<ExperimentalWithCallbackMethod_notifyToManager<ExperimentalWithCallbackMethod_Spread<ExperimentalWithCallbackMethod_PutOneNode<Service > > > > > ExperimentalCallbackService;
   template <class BaseClass>
   class WithGenericMethod_Put : public BaseClass {
    private:
@@ -423,6 +495,23 @@ class MyMessage final {
     }
     // disable synchronous version of this method
     ::grpc::Status Spread(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+  };
+  template <class BaseClass>
+  class WithGenericMethod_PutOneNode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithGenericMethod_PutOneNode() {
+      ::grpc::Service::MarkMethodGeneric(4);
+    }
+    ~WithGenericMethod_PutOneNode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
       abort();
       return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
     }
@@ -505,6 +594,26 @@ class MyMessage final {
     }
     void RequestSpread(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
       ::grpc::Service::RequestAsyncUnary(3, context, request, response, new_call_cq, notification_cq, tag);
+    }
+  };
+  template <class BaseClass>
+  class WithRawMethod_PutOneNode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithRawMethod_PutOneNode() {
+      ::grpc::Service::MarkMethodRaw(4);
+    }
+    ~WithRawMethod_PutOneNode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    void RequestPutOneNode(::grpc::ServerContext* context, ::grpc::ByteBuffer* request, ::grpc::ServerAsyncResponseWriter< ::grpc::ByteBuffer>* response, ::grpc::CompletionQueue* new_call_cq, ::grpc::ServerCompletionQueue* notification_cq, void *tag) {
+      ::grpc::Service::RequestAsyncUnary(4, context, request, response, new_call_cq, notification_cq, tag);
     }
   };
   template <class BaseClass>
@@ -608,6 +717,31 @@ class MyMessage final {
     virtual void Spread(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
   };
   template <class BaseClass>
+  class ExperimentalWithRawCallbackMethod_PutOneNode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    ExperimentalWithRawCallbackMethod_PutOneNode() {
+      ::grpc::Service::experimental().MarkMethodRawCallback(4,
+        new ::grpc::internal::CallbackUnaryHandler< ::grpc::ByteBuffer, ::grpc::ByteBuffer>(
+          [this](::grpc::ServerContext* context,
+                 const ::grpc::ByteBuffer* request,
+                 ::grpc::ByteBuffer* response,
+                 ::grpc::experimental::ServerCallbackRpcController* controller) {
+                   this->PutOneNode(context, request, response, controller);
+                 }));
+    }
+    ~ExperimentalWithRawCallbackMethod_PutOneNode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable synchronous version of this method
+    ::grpc::Status PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    virtual void PutOneNode(::grpc::ServerContext* context, const ::grpc::ByteBuffer* request, ::grpc::ByteBuffer* response, ::grpc::experimental::ServerCallbackRpcController* controller) { controller->Finish(::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "")); }
+  };
+  template <class BaseClass>
   class WithStreamedUnaryMethod_Put : public BaseClass {
    private:
     void BaseClassMustBeDerivedFromService(const Service *service) {}
@@ -687,9 +821,29 @@ class MyMessage final {
     // replace default version of method with streamed unary
     virtual ::grpc::Status StreamedSpread(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::myMessage::KeyAndValue,::myMessage::Empty>* server_unary_streamer) = 0;
   };
-  typedef WithStreamedUnaryMethod_Put<WithStreamedUnaryMethod_Get<WithStreamedUnaryMethod_notifyToManager<WithStreamedUnaryMethod_Spread<Service > > > > StreamedUnaryService;
+  template <class BaseClass>
+  class WithStreamedUnaryMethod_PutOneNode : public BaseClass {
+   private:
+    void BaseClassMustBeDerivedFromService(const Service *service) {}
+   public:
+    WithStreamedUnaryMethod_PutOneNode() {
+      ::grpc::Service::MarkMethodStreamed(4,
+        new ::grpc::internal::StreamedUnaryHandler< ::myMessage::KeyAndValue, ::myMessage::Empty>(std::bind(&WithStreamedUnaryMethod_PutOneNode<BaseClass>::StreamedPutOneNode, this, std::placeholders::_1, std::placeholders::_2)));
+    }
+    ~WithStreamedUnaryMethod_PutOneNode() override {
+      BaseClassMustBeDerivedFromService(this);
+    }
+    // disable regular version of this method
+    ::grpc::Status PutOneNode(::grpc::ServerContext* context, const ::myMessage::KeyAndValue* request, ::myMessage::Empty* response) override {
+      abort();
+      return ::grpc::Status(::grpc::StatusCode::UNIMPLEMENTED, "");
+    }
+    // replace default version of method with streamed unary
+    virtual ::grpc::Status StreamedPutOneNode(::grpc::ServerContext* context, ::grpc::ServerUnaryStreamer< ::myMessage::KeyAndValue,::myMessage::Empty>* server_unary_streamer) = 0;
+  };
+  typedef WithStreamedUnaryMethod_Put<WithStreamedUnaryMethod_Get<WithStreamedUnaryMethod_notifyToManager<WithStreamedUnaryMethod_Spread<WithStreamedUnaryMethod_PutOneNode<Service > > > > > StreamedUnaryService;
   typedef Service SplitStreamedService;
-  typedef WithStreamedUnaryMethod_Put<WithStreamedUnaryMethod_Get<WithStreamedUnaryMethod_notifyToManager<WithStreamedUnaryMethod_Spread<Service > > > > StreamedService;
+  typedef WithStreamedUnaryMethod_Put<WithStreamedUnaryMethod_Get<WithStreamedUnaryMethod_notifyToManager<WithStreamedUnaryMethod_Spread<WithStreamedUnaryMethod_PutOneNode<Service > > > > > StreamedService;
 };
 
 }  // namespace myMessage

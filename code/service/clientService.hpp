@@ -29,6 +29,7 @@ public:
 
 	}
 	void put(string, val_t);
+	void put_one_node(string key, val_t value);
 	val_t get(string);
 private:
 	std::unique_ptr<MyMessage::Stub> stub_;

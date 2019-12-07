@@ -18,6 +18,9 @@ rpc notifyToManager(StorageInfo) returns (Empty) {}
 // coordinator spread to storages
 rpc Spread(KeyAndValue) returns (Empty) {}
 
+// client to manager, manager to coordinator
+rpc PutOneNode(KeyAndValue) returns (Empty){}
+    
 }
 
 message KeyAndValue {

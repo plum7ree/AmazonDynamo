@@ -11,7 +11,7 @@
 #include "consistent_hash.hpp"
 
 PrefListType HashRing::getPrefList(string k) {  // dynamo paper's preference list.
-  cout << "getPrefList-prefsize vs hashmap size: " << prefListSize << ", " << hashMap.size() <<endl;
+  // cout << "getPrefList-prefsize vs hashmap size: " << prefListSize << ", " << hashMap.size() <<endl;
   assert(prefListSize <= hashMap.size());
   PrefListType ret;
   size_t h = std::hash<string>{}(k);
@@ -49,7 +49,7 @@ PrefListType HashRing::getPrefList(string k) {  // dynamo paper's preference lis
   return ret;
 }
 
-
+// remember node is ip string
 void HashRing::addNode(string node) {
   // assert node name is not exisintg
   if(hashMap.empty()) {
@@ -68,17 +68,7 @@ void HashRing::addNode(string node) {
 
   // size_t count = 0;
   Q_div_S = (size_t) nVNode / (pNodeList.size() + 1);
-  // while(count < Q_div_S){
-  //   auto i = rand() % pNodeList.size();
-  //   string replaceThis = pNodeList.at(i);
-  //
-  //   for(auto it=hashMap.begin(); it != hashMap.end(); it++) {
-  //     if(it->second == replaceThis) {
-  //         hashMap[it->first] = node;
-  //     }
-  //   }
-  //   count++;
-  // }
+
   srand(time(NULL));
   // size_t howManyReplacePerInstance = Q_div_S / pNodeList.size();
   // if(howManyReplacePerInstance == 0) {howManyReplacePerInstance = 1;}
@@ -108,9 +98,15 @@ void HashRing::addNode(string node) {
 
 }
 
+// void HashRing::removeNode(string node) {
+//
+// }
+
+
 HashMapType HashRing::getHashMap() {
   return hashMap;
 }
+
 //
 // int main(int argc, char **argv) {
 //

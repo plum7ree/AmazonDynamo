@@ -30,6 +30,7 @@ public:
 	void finalize();
 	val_t get(string key);
 	bool put(string key, val_t value);
+	bool put_only_to_one_node(string key, val_t value);
 };
 
 class GTStoreManager {

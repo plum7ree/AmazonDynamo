@@ -44,6 +44,8 @@ private:
 	HashRing ring = HashRing((size_t)_VNODE_SIZE, (size_t)_PREF_LIST_SIZE);
 public:
 	Status Put(ServerContext *ctx, const KeyAndValue *input, Empty *empty) override;
+	Status PutOneNode(ServerContext *ctx, const KeyAndValue *input, Empty *empty) override;
+
 	Status Get(ServerContext *ctx, const Key *input, Value *value) override;
 
 	Status notifyToManager(ServerContext *ctx, const StorageInfo *input,  Empty *empty) override;

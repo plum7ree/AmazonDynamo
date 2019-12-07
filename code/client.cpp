@@ -35,6 +35,19 @@ bool GTStoreClient::put(string key, val_t value) {
 	return true;
 }
 
+bool GTStoreClient::put_only_to_one_node(string key, val_t value) {
+
+	string print_value = "";
+	for (uint i = 0; i < value.size(); i++) {
+		print_value += value[i] + " ";
+	}
+	cout << "Inside GTStoreClient::put_only_to_one_node() for client: " << client_id << " key: " << key << " value: " << print_value << "\n";
+	// Put the value!
+	cls.put_one_node(key, value);
+
+	return true;
+}
+
 void GTStoreClient::finalize() {
 
 	cout << "Inside GTStoreClient::finalize() for client " << client_id << "\n";
@@ -42,7 +55,7 @@ void GTStoreClient::finalize() {
 
 
 
-int main2(int argc, char **argv) {
+int main(int argc, char **argv) {
 
 	if(argc < 2) {
 		cout << "no node name. \nex) ./client <some ip or node name>"<<endl;
@@ -65,7 +78,7 @@ int main2(int argc, char **argv) {
 	values.push_back("b1");
 	values.push_back("b2");
 	values.push_back("b3");
-	client.put(key, values);
+	client.put_only_to_one_node(key, values);
 
 	sleep(2);
 	key = "A";

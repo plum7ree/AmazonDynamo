@@ -29,6 +29,29 @@ Status ManagerService::Put(ServerContext *ctx, const KeyAndValue *input, Empty *
   return Status::OK;
 }
 
+// for test version control. preflist size is always one(coordinator).
+Status ManagerService::PutOneNode(ServerContext *ctx, const KeyAndValue *input, Empty *empty) {
+  string WARNING = " NEVER CALL input->key() MORE THAN ONCE ";
+  string k = input->key();
+  cout <<"key value from client: " + k << endl;
+  PrefListType pl = {ring.getPrefList(k)[0]};
+  // PrefListType pl = {"node1" , "node2"};
+  cout << "preference list of size " << pl.size() << ": ";
+  for(auto it=pl.begin(); it != pl.end() ; it++) {
+    cout << *it << ", ";
+  }
+  cout << endl;
+
+  val_t value;
+  _get_value_from_msg(value, input);
+  int load_balance_res = rand() % pl.size();
+  // server sends to storage
+  ::storageConn[pl[load_balance_res]].put(k, value, pl);
+
+
+  return Status::OK;
+}
+
 Status ManagerService::Get(ServerContext *ctx, const Key *input, Value *value) {
   string k = input->key();
   PrefListType pl = ring.getPrefList(k);
