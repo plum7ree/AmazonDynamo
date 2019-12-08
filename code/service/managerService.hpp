@@ -42,6 +42,8 @@ using myMessage::Empty;
 class ManagerService final: public MyMessage::Service {
 private:
 	HashRing ring = HashRing((size_t)_VNODE_SIZE, (size_t)_PREF_LIST_SIZE);
+	pthread_cond_t _cond;
+	pthread_mutex_t _lock;
 public:
 	Status Put(ServerContext *ctx, const KeyAndValue *input, Empty *empty) override;
 	Status PutOneNode(ServerContext *ctx, const KeyAndValue *input, Empty *empty) override;

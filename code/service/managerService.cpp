@@ -53,28 +53,40 @@ Status ManagerService::PutOneNode(ServerContext *ctx, const KeyAndValue *input, 
 }
 
 Status ManagerService::Get(ServerContext *ctx, const Key *input, Value *value) {
+  // ***** threads x seconds ******************************
   string k = input->key();
   PrefListType pl = ring.getPrefList(k);
-  final_val_t fv;
   final_val_t recent_val;
   recent_val.vectorClock = -1;
   vector<string> needToUpdate;
+  vector<int> threads;
 
   for (auto it=pl.begin(); it != pl.end(); it++) {
-    fv = ::storageConn[*it].get(k);
-    if(!fv.empty && (fv.vectorClock > recent_val.vectorClock)) {
-      recent_val = fv;
-    } else {
-      needToUpdate.push_back(*it);
-    }
+    thread t(*it,&recent_val,&needToUpdate);
+    threads.push_back(t.get_id());
   }
+  // ************************************************************
+
+  // string k = input->key();
+  // PrefListType pl = ring.getPrefList(k);
+  // final_val_t fv;
+  // final_val_t recent_val;
+  // recent_val.vectorClock = -1;
+  // vector<string> needToUpdate;
+  //
+  // for (auto it=pl.begin(); it != pl.end(); it++) {
+  //   fv = ::storageConn[*it].get(k);
+  //   if(!fv.empty && (fv.vectorClock > recent_val.vectorClock)) {
+  //     recent_val = fv;
+  //   } else {
+  //     needToUpdate.push_back(*it);
+  //   }
+  // }
 
  // TODO:
  string TODO = "TODO: create another thread and update storages with 'needToUpdate'";
 
  //
-
-
   if(recent_val.vectorClock >= 0) {
     _set_msg_value(value, recent_val.value);
 
@@ -82,8 +94,25 @@ Status ManagerService::Get(ServerContext *ctx, const Key *input, Value *value) {
   }
 
   return Status(StatusCode::NOT_FOUND, "");
+}
+
+// ***** threads x seconds ******************************
+void ManagerService::sub_get(string storage_ip, final_val_t *recent_val, vector<string> *needToUpdate) {
+
+  final_val_t fv = ::storageConn[*it].get(k);
+  if(!fv.empty && (fv.vectorClock > recent_val->vectorClock)) {
+    pthread_mutex_lock(&_lock);
+    *recent_val = fv;
+    pthread_mutex_unlock(&_lock);
+  } else {
+    pthread_mutex_lock(&_lock);
+    needToUpdate->push_back(*it);
+    pthread_mutex_unlock(&_lock);
+  }
 
 }
+// ***********************************
+
 
 Status ManagerService::notifyToManager(ServerContext *ctx, const StorageInfo *input, Empty *empty) {
   string storage_ip = input->ip();
