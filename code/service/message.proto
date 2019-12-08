@@ -20,7 +20,10 @@ rpc Spread(KeyAndValue) returns (Empty) {}
 
 // client to manager, manager to coordinator
 rpc PutOneNode(KeyAndValue) returns (Empty){}
-    
+
+rpc PopContent(HashRange) returns (stream KeyAndValue) {}
+
+
 }
 
 message KeyAndValue {
@@ -41,6 +44,11 @@ message Value{
 
 message StorageInfo{
   string ip = 1;
+}
+
+message HashRange{
+  uint32 startHash = 1;
+  uint32 partitionSize = 2;
 }
 
 message Empty{

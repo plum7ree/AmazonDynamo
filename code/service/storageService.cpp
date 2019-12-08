@@ -109,3 +109,25 @@ int32_t StorageServer::storeValue(string k, val_t v, int32_t vectorClock) {
 
   return vclock;
 }
+
+Status StorageServer::PopContent(ServerContext *ctx, const HashRange *input, ServerWriter<KeyAndValue> *writer) {
+  size_t hash_start = (size_t) input->starthash();
+  size_t partition_size = (size_t) input->partitionsize();
+
+  // linear searching. So might need to improve using ordered hash map.
+  for(auto it=inMemoryStorage.begin(); it!=inMemoryStorage.end(); it++) {
+    size_t h = hash<string>{}(it->first);
+    if(h >= hash_start && h < hash_start + partition_size) {
+      cout<<"StorageServer::PopContent, k: " << it->first << " h: " << h << endl;
+      KeyAndValue kv;
+      kv.set_key(it->first);
+      _set_msg_value(&kv, it->second.value);
+      writer->Write(kv);
+    }
+  }
+
+}
+
+// Status StorageServer::PushContent(ServerContext *ctx, const HashRange *input, ServerWriter<KeyAndValue> *writer) {
+//
+// }

@@ -50,12 +50,14 @@ PrefListType HashRing::getPrefList(string k) {  // dynamo paper's preference lis
 }
 
 // remember node is ip string
-void HashRing::addNode(string node) {
+vector<move_content_t> HashRing::addNode(string node) {
   // assert node name is not exisintg
+  vector<move_content_t> move_content;
+  size_t partition;
   if(hashMap.empty()) {
     size_t m = std::numeric_limits<std::size_t>::max();
     // cout << "max: " << m << endl;
-    size_t partition = m/nVNode;
+    partition = m/nVNode;
     size_t location = 0;
     for(auto i=0; i<nVNode; i++) {
       hashMap.insert({location, node});
@@ -63,7 +65,7 @@ void HashRing::addNode(string node) {
     }
     pNodeList.push_back(node);
     // cout << "HashRing::addNode hashMap created, size: " << hashMap.size() << endl;
-    return;
+    return move_content;
   }
 
   // size_t count = 0;
@@ -72,6 +74,7 @@ void HashRing::addNode(string node) {
   srand(time(NULL));
   // size_t howManyReplacePerInstance = Q_div_S / pNodeList.size();
   // if(howManyReplacePerInstance == 0) {howManyReplacePerInstance = 1;}
+
   for(size_t i=0;i<pNodeList.size(); i++) {
     string replaceThis = pNodeList.at(i);
     vector<size_t> replaceThisList;
@@ -88,15 +91,23 @@ void HashRing::addNode(string node) {
       auto r = rand() % replaceThisList.size();
       auto it = find(alreadyReplaced.begin(), alreadyReplaced.end(),r);
       if(it != alreadyReplaced.end()) {j--; continue;}
+      //
+      string TODO = "move content of this hash range to new node!!";
+      move_content.push_back({hashMap[replaceThisList[r]], node, replaceThisList[r], partition});
       hashMap[replaceThisList[r]] = node;
+      //
       alreadyReplaced.push_back(r);
     }
   }
   pNodeList.push_back(node);
 
-
-
+  return move_content;
 }
+
+// void HashRing::moveContent(string dst_ip, string src_ip, size_t start_hash_val, size_t partition_size) {
+//
+// }
+
 
 // void HashRing::removeNode(string node) {
 //

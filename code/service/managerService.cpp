@@ -98,14 +98,27 @@ Status ManagerService::notifyToManager(ServerContext *ctx, const StorageInfo *in
 
 // Status ManagerService::RequestToManager()
 
-void ManagerService::addNode(string node_ip) {
-  ring.addNode(node_ip);
+void ManagerService::addNode(string new_node_ip) {
+  vector<move_content_t> moveContent = ring.addNode(new_node_ip);
+  // cout<<"ManagerService::addNode move content size: " << moveContent.size() << endl;
+  // for(auto it=moveContent.begin();it!=moveContent.end();it++) {
+  //   cout << "hash: "<< it->start_hash_val << " original node: " << it->src_ip << endl;
+  //   // string src_ip;
+  //   // string dst_ip;
+  //   // size_t start_hash_val;
+  //   // size_t partition_size;
+  //   ::storageConn[it->src_ip].moveContent(it->start_hash_val, it->partition_size, new_node_ip);
+  //
+  //
+  // }
 }
 // Status
 
 
 
 // ***************** ManagerStub class  *****************
+
+
 
 void ManagerStub::put(string k, val_t &value, PrefListType &pl){
   ClientContext ctx;
@@ -132,3 +145,35 @@ final_val_t ManagerStub::get(string k) {
   }
   return fv;
 }
+
+// void ManagerStub::moveContent(size_t start_hash_val, size_t partition_size, string dst_ip){
+//   ClientContext ctx;
+//   HashRange hrange;
+//   KeyAndValue kv;
+//   hrange.set_starthash(start_hash_val);
+//   hrange.set_partitionsize(partition_size);
+//   unique_ptr<ClientReader<KeyAndValue>> reader(
+//       stub_->PopContent(&ctx, hrange));
+//   // ::storageConn[node_ip].pushContent()
+//   // Status s = MoveContent()
+//   while (reader->Read(&kv)) {
+//     string k = kv.key();
+//     val_t value;
+//     _get_value_from_msg(value, &kv);
+//     cout << "key recieved! k: " << k << endl;
+//     ClientContext ctx;
+//     KeyAndValue kv2;
+//     Empty empty;
+//     PrefListType pl = {dst_ip};
+//     kv2.set_key(k);
+//     _set_msg_value(&kv2, value);
+//     _set_msg_preflist(&kv2, pl);
+//     ::storageConn[dst_ip].getStub()->Put(&ctx, kv, &empty);
+//   }
+//   Status status = reader->Finish();
+//   if (status.ok()) {
+//     std::cout << "ManagerService::moveContent rpc succeeded." << std::endl;
+//   } else {
+//     std::cout << "ManagerService::moveContent rpc failed." << std::endl;
+//   }
+// }

@@ -27,6 +27,7 @@ using myMessage::StorageInfo;
 using myMessage::Key;
 using myMessage::Value;
 using myMessage::Empty;
+using myMessage::HashRange;
 
 #define _VNODE_SIZE 			30
 #define _PREF_LIST_SIZE 	4
@@ -65,8 +66,13 @@ public:
 	      : stub_(MyMessage::NewStub(channel)) {
 
 	}
+	std::shared_ptr<MyMessage::Stub> getStub() {
+		return stub_;
+	}
 	void put(string k, val_t &v, PrefListType &pl);
 	final_val_t get(string k);
+	void moveContent(size_t start_hash_val, size_t partition_size, string dst_ip);
+
 };
 
 

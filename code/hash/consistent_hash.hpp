@@ -14,7 +14,12 @@
 //
 // remove:
 // nodes are distrubted
-
+typedef struct {
+  string src_ip;
+  string dst_ip;
+  size_t start_hash_val;
+  size_t partition_size;
+} move_content_t;
 
 class HashRing{
 private:
@@ -40,7 +45,8 @@ public:
   // }
 
   PrefListType getPrefList(string k);
-  void addNode(string node);
+  // void addNode(string node);
+  vector<move_content_t> addNode(string node);
   HashMapType getHashMap();
 
   // void removeNode() {

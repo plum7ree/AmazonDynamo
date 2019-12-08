@@ -42,7 +42,7 @@ struct TableStruct_message_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::google::protobuf::internal::ParseTable schema[5]
+  static const ::google::protobuf::internal::ParseTable schema[6]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::google::protobuf::internal::FieldMetadata field_metadata[];
   static const ::google::protobuf::internal::SerializationTable serialization_table[];
@@ -53,6 +53,9 @@ namespace myMessage {
 class Empty;
 class EmptyDefaultTypeInternal;
 extern EmptyDefaultTypeInternal _Empty_default_instance_;
+class HashRange;
+class HashRangeDefaultTypeInternal;
+extern HashRangeDefaultTypeInternal _HashRange_default_instance_;
 class Key;
 class KeyDefaultTypeInternal;
 extern KeyDefaultTypeInternal _Key_default_instance_;
@@ -69,6 +72,7 @@ extern ValueDefaultTypeInternal _Value_default_instance_;
 namespace google {
 namespace protobuf {
 template<> ::myMessage::Empty* Arena::CreateMaybeMessage<::myMessage::Empty>(Arena*);
+template<> ::myMessage::HashRange* Arena::CreateMaybeMessage<::myMessage::HashRange>(Arena*);
 template<> ::myMessage::Key* Arena::CreateMaybeMessage<::myMessage::Key>(Arena*);
 template<> ::myMessage::KeyAndValue* Arena::CreateMaybeMessage<::myMessage::KeyAndValue>(Arena*);
 template<> ::myMessage::StorageInfo* Arena::CreateMaybeMessage<::myMessage::StorageInfo>(Arena*);
@@ -627,6 +631,125 @@ class StorageInfo final :
 };
 // -------------------------------------------------------------------
 
+class HashRange final :
+    public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:myMessage.HashRange) */ {
+ public:
+  HashRange();
+  virtual ~HashRange();
+
+  HashRange(const HashRange& from);
+
+  inline HashRange& operator=(const HashRange& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  #if LANG_CXX11
+  HashRange(HashRange&& from) noexcept
+    : HashRange() {
+    *this = ::std::move(from);
+  }
+
+  inline HashRange& operator=(HashRange&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+  #endif
+  static const ::google::protobuf::Descriptor* descriptor() {
+    return default_instance().GetDescriptor();
+  }
+  static const HashRange& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const HashRange* internal_default_instance() {
+    return reinterpret_cast<const HashRange*>(
+               &_HashRange_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    4;
+
+  void Swap(HashRange* other);
+  friend void swap(HashRange& a, HashRange& b) {
+    a.Swap(&b);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline HashRange* New() const final {
+    return CreateMaybeMessage<HashRange>(nullptr);
+  }
+
+  HashRange* New(::google::protobuf::Arena* arena) const final {
+    return CreateMaybeMessage<HashRange>(arena);
+  }
+  void CopyFrom(const ::google::protobuf::Message& from) final;
+  void MergeFrom(const ::google::protobuf::Message& from) final;
+  void CopyFrom(const HashRange& from);
+  void MergeFrom(const HashRange& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  #if GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  static const char* _InternalParse(const char* begin, const char* end, void* object, ::google::protobuf::internal::ParseContext* ctx);
+  ::google::protobuf::internal::ParseFunc _ParseFunc() const final { return _InternalParse; }
+  #else
+  bool MergePartialFromCodedStream(
+      ::google::protobuf::io::CodedInputStream* input) final;
+  #endif  // GOOGLE_PROTOBUF_ENABLE_EXPERIMENTAL_PARSER
+  void SerializeWithCachedSizes(
+      ::google::protobuf::io::CodedOutputStream* output) const final;
+  ::google::protobuf::uint8* InternalSerializeWithCachedSizesToArray(
+      ::google::protobuf::uint8* target) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  void SharedCtor();
+  void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(HashRange* other);
+  private:
+  inline ::google::protobuf::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::google::protobuf::Metadata GetMetadata() const final;
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  // uint32 startHash = 1;
+  void clear_starthash();
+  static const int kStartHashFieldNumber = 1;
+  ::google::protobuf::uint32 starthash() const;
+  void set_starthash(::google::protobuf::uint32 value);
+
+  // uint32 partitionSize = 2;
+  void clear_partitionsize();
+  static const int kPartitionSizeFieldNumber = 2;
+  ::google::protobuf::uint32 partitionsize() const;
+  void set_partitionsize(::google::protobuf::uint32 value);
+
+  // @@protoc_insertion_point(class_scope:myMessage.HashRange)
+ private:
+  class HasBitSetters;
+
+  ::google::protobuf::internal::InternalMetadataWithArena _internal_metadata_;
+  ::google::protobuf::uint32 starthash_;
+  ::google::protobuf::uint32 partitionsize_;
+  mutable ::google::protobuf::internal::CachedSize _cached_size_;
+  friend struct ::TableStruct_message_2eproto;
+};
+// -------------------------------------------------------------------
+
 class Empty final :
     public ::google::protobuf::Message /* @@protoc_insertion_point(class_definition:myMessage.Empty) */ {
  public:
@@ -665,7 +788,7 @@ class Empty final :
                &_Empty_default_instance_);
   }
   static constexpr int kIndexInFileMessages =
-    4;
+    5;
 
   void Swap(Empty* other);
   friend void swap(Empty& a, Empty& b) {
@@ -1149,11 +1272,45 @@ inline void StorageInfo::set_allocated_ip(::std::string* ip) {
 
 // -------------------------------------------------------------------
 
+// HashRange
+
+// uint32 startHash = 1;
+inline void HashRange::clear_starthash() {
+  starthash_ = 0u;
+}
+inline ::google::protobuf::uint32 HashRange::starthash() const {
+  // @@protoc_insertion_point(field_get:myMessage.HashRange.startHash)
+  return starthash_;
+}
+inline void HashRange::set_starthash(::google::protobuf::uint32 value) {
+  
+  starthash_ = value;
+  // @@protoc_insertion_point(field_set:myMessage.HashRange.startHash)
+}
+
+// uint32 partitionSize = 2;
+inline void HashRange::clear_partitionsize() {
+  partitionsize_ = 0u;
+}
+inline ::google::protobuf::uint32 HashRange::partitionsize() const {
+  // @@protoc_insertion_point(field_get:myMessage.HashRange.partitionSize)
+  return partitionsize_;
+}
+inline void HashRange::set_partitionsize(::google::protobuf::uint32 value) {
+  
+  partitionsize_ = value;
+  // @@protoc_insertion_point(field_set:myMessage.HashRange.partitionSize)
+}
+
+// -------------------------------------------------------------------
+
 // Empty
 
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

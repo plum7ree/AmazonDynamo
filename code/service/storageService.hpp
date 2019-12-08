@@ -27,6 +27,8 @@ using myMessage::StorageInfo;
 using myMessage::Key;
 using myMessage::Value;
 using myMessage::Empty;
+using myMessage::HashRange;
+
 
 #define PUT 1
 #define GET 2
@@ -52,10 +54,13 @@ class StorageServer : public MyMessage::Service {
 private:
 	string thisIP;
 	unordered_map<string, final_val_t> inMemoryStorage;
+	map<size_t, string> hashMap;
 public:
 Status Put(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) override;
 Status Get(ServerContext *ctx, const Key *input, Value *value) override;
 Status Spread(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) override;
+Status PopContent(ServerContext *ctx, const HashRange *input, ServerWriter<KeyAndValue> *writer) override;
+
 int32_t storeValue(string k, val_t v, int32_t vectorClock);
 string getIP() {return thisIP;}
 void setIP(string ip) {thisIP = ip;}
