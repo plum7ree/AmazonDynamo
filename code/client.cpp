@@ -55,7 +55,7 @@ void GTStoreClient::finalize() {
 
 
 
-int main(int argc, char **argv) {
+int main2(int argc, char **argv) {
 
 	if(argc < 2) {
 		cout << "no node name. \nex) ./client <some ip or node name>"<<endl;
