@@ -35,17 +35,22 @@ cleanup () {
 
 # Launch the client testing app
 # Usage: ./test_app <test> <client_id>
-#init 10
+#init 5
 #./test_app basic_put_get
 #cleanup
+#
+#init 2
+#./test_app put_get_faulty_node "${STORAGE_PIDS[0]}"
+#cleanup
+#
+#init 2
+#./test_app put_get_faulty_node "${STORAGE_PIDS[1]}"
+#cleanup
 
-init 2
-./test_app put_get_faulty_node "${STORAGE_PIDS[0]}"
+init 5
+./test_app data_partitioning "${STORAGE_PIDS[@]}"
 cleanup
 
-init 2
-./test_app put_get_faulty_node "${STORAGE_PIDS[1]}"
-cleanup
 # ./test_app test_case2
 # ./test_app test_case3
 

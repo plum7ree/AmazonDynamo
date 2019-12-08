@@ -23,3 +23,6 @@ code/manager
 code/conhash
 code/peda*
 code/gdb*
+
+*.swp
+*img*.log

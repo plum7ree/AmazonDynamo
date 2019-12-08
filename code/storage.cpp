@@ -45,10 +45,18 @@ void GTStoreStorage::init() {
 
 }
 
-
+void stats_signal_handler(int signum)
+{
+    if (signum == SIGUSR1)
+    {
+        storageServer.printStats();
+    }
+}
 
 int main(int argc, char **argv) {
+    signal(SIGUSR1, stats_signal_handler);
 	GTStoreStorage storage;
 	storage.init();
+
 
 }

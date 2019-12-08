@@ -1,4 +1,6 @@
 #include "storageService.hpp"
+#include <iostream>
+#include <fstream>
 
 
 
@@ -108,4 +110,11 @@ int32_t StorageServer::storeValue(string k, val_t v, int32_t vectorClock) {
   }
 
   return vclock;
+}
+
+void StorageServer::printStats() {
+    ofstream txtOut;
+    txtOut.open("/tmp/storage.stats.txt");
+    txtOut << inMemoryStorage.size() << endl;
+    txtOut.close();
 }

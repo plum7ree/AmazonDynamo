@@ -59,5 +59,6 @@ Status Spread(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) overr
 int32_t storeValue(string k, val_t v, int32_t vectorClock);
 string getIP() {return thisIP;}
 void setIP(string ip) {thisIP = ip;}
+void printStats();
 
 };
