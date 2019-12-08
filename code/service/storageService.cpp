@@ -83,6 +83,7 @@ Status StorageServer::Spread(ServerContext *ctx, const KeyAndValue *input,  Empt
   int32_t vclock = input->vectorclock();
   storeValue(k,value,vclock);
   cout << "StorageServer::Spread value stored! k: " << k << " v[0]: " << value[0] << " vclock: " << vclock << endl;
+  cout << "STATS: size " << inMemoryStorage.size() << endl;
 
 
   return Status::OK;

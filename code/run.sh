@@ -47,7 +47,7 @@ cleanup () {
 #./test_app put_get_faulty_node "${STORAGE_PIDS[1]}"
 #cleanup
 
-init 5
+init 10
 ./test_app data_partitioning "${STORAGE_PIDS[@]}"
 cleanup
 
