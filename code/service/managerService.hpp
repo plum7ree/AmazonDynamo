@@ -65,7 +65,9 @@ public:
 	      : stub_(MyMessage::NewStub(channel)) {
 
 	}
-	void put(string k, val_t &v, PrefListType &pl);
+	void put(string k, val_t v, PrefListType pl);
+	void update(string k, val_t value, uint32_t vclock);
+
 	final_val_t get(string k);
 };
 

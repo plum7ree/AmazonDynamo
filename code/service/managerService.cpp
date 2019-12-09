@@ -59,10 +59,15 @@ Status ManagerService::Get(ServerContext *ctx, const Key *input, Value *value) {
   final_val_t recent_val;
   recent_val.vectorClock = -1;
   vector<string> needToUpdate;
+  string recent_ip;
 
   for (auto it=pl.begin(); it != pl.end(); it++) {
     fv = ::storageConn[*it].get(k);
-    if(!fv.empty && (fv.vectorClock > recent_val.vectorClock)) {
+    if(!fv.empty && (fv.vectorClock >= recent_val.vectorClock)) {
+      if(recent_ip.length() > 0){
+        needToUpdate.push_back(recent_ip);
+      }
+      recent_ip = *it;
       recent_val = fv;
     } else {
       needToUpdate.push_back(*it);
@@ -71,7 +76,11 @@ Status ManagerService::Get(ServerContext *ctx, const Key *input, Value *value) {
 
  // TODO:
  string TODO = "TODO: create another thread and update storages with 'needToUpdate'";
-
+ val_t v_update = recent_val.value;
+ for (auto it=needToUpdate.begin(); it !=needToUpdate.end(); it++) {
+   cout<< "updating " << *it << " with k: " << k << " vclock: " << recent_val.vectorClock << endl;
+   ::storageConn[*it].update(k, v_update, recent_val.vectorClock);
+ }
  //
 
 
@@ -107,7 +116,7 @@ void ManagerService::addNode(string node_ip) {
 
 // ***************** ManagerStub class  *****************
 
-void ManagerStub::put(string k, val_t &value, PrefListType &pl){
+void ManagerStub::put(string k, val_t value, PrefListType pl){
   ClientContext ctx;
   KeyAndValue kv;
   Empty empty;
@@ -115,6 +124,16 @@ void ManagerStub::put(string k, val_t &value, PrefListType &pl){
   _set_msg_value(&kv, value);
   _set_msg_preflist(&kv, pl);
 	Status s =  stub_->Put(&ctx, kv, &empty);
+}
+
+void ManagerStub::update(string k, val_t value, uint32_t vclock){
+  ClientContext ctx;
+  KeyAndValue kv;
+  Empty empty;
+  kv.set_key(k);
+  kv.set_vectorclock(vclock);
+  _set_msg_value(&kv, value);
+	Status s =  stub_->Spread(&ctx, kv, &empty);
 }
 
 final_val_t ManagerStub::get(string k) {
