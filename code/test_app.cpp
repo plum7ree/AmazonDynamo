@@ -3,9 +3,53 @@
 #include <fstream>
 #include <iostream>
 #include <time.h>
+#include <chrono>
+#include <ctime>
+#include <thread>
+#include <mutex>
+#include <sys/file.h>
 
 #define PASS "\033[32;1m PASS \033[0m\n"
 #define FAIL "\033[31;1m FAIL \033[0m\n"
+
+std::mutex mtx;
+int total_requests = 0;
+
+void query() {
+    GTStoreClient client;
+    int count = 0;
+    client.init(0);
+    auto start = std::chrono::system_clock::now();
+    while (true) {
+        string key = "";
+        int len = rand() % 20 + 10;
+        for( int j = 0; j < len; ++j){
+            key = key + "?";
+            key[j] = 'a' + rand()%26;
+        }
+        vector<string> value;
+        value.push_back(key);
+        client.put(key, value);
+        count += 1;
+
+        auto end = std::chrono::system_clock::now();
+        std::chrono::duration<double> elapsed_seconds = end-start;
+        if (elapsed_seconds.count() > 5) {
+            break;
+        }
+    }
+    client.finalize();
+    mtx.lock();
+    total_requests += count;
+    mtx.unlock();
+}
+void test_benchmark(int num_threads) {
+    query();
+    std::ofstream outfile;
+    outfile.open("benchmark.data", std::ios_base::app); // append instead of overwrite
+    outfile << total_requests << endl;
+    outfile.close();
+}
 
 void test_data_partitioning(int* pids) {
     cout << "================== Get key distribution ==================\n";
@@ -117,15 +161,21 @@ int main(int argc, char **argv) {
 	string test = string(argv[1]);
 	if (string(argv[1]) == "basic_put_get") {
 		test_basic_put_get();
+    } else if (string(argv[1]) == "overriding_put_get") {
+        int pid = atoi(argv[2]);
+        test_put_get_faulty_node(pid);
 	} else if (string(argv[1]) == "put_get_faulty_node") {
 	    int pid = atoi(argv[2]);
         test_put_get_faulty_node(pid);
-    } else if (string(argv[1]) == "data_partitioning") {
+    } else if (string(argv[1]) == "data_partitioning_consistency") {
 	    int* pids = new int[10] {};
 	    for(int i = 0; i < 10; i++) {
 	        pids[i] = atoi(argv[2+i]);
 
 	    }
         test_data_partitioning(pids);
+    } else if (string(argv[1]) == "benchmark") {
+        int num_threads = atoi(argv[2]);
+        test_benchmark(num_threads);
     }
 }

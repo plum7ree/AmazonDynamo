@@ -49,9 +49,11 @@ private:
 
 
 class StorageServer : public MyMessage::Service {
+
 private:
 	string thisIP;
 	unordered_map<string, final_val_t> inMemoryStorage;
+//	semaphore sem;
 public:
 Status Put(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) override;
 Status Get(ServerContext *ctx, const Key *input, Value *value) override;

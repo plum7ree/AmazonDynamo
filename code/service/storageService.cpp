@@ -1,7 +1,7 @@
 #include "storageService.hpp"
 #include <iostream>
 #include <fstream>
-
+#include <unistd.h>
 
 
 StorageServer server;
@@ -73,7 +73,8 @@ Status StorageServer::Put(ServerContext *ctx, const KeyAndValue *input,  Empty *
       }
       storageConn[*ip].spread(k, value, vectorClock);
   }
-  return Status::OK;
+    usleep(10000); // simulate network latency
+    return Status::OK;
 }
 
 Status StorageServer::Spread(ServerContext *ctx, const KeyAndValue *input,  Empty *empty) {
