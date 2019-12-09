@@ -19,7 +19,6 @@ void test_data_partitioning(int* pids) {
             key = key + "?";
             key[j] = 'a' + rand()%26;
         }
-        cout << key << endl;
         vector<string> value;
         value.push_back(key);
         client.put(key, value);

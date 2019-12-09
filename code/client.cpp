@@ -7,17 +7,17 @@ ClientService cls;
 
 void GTStoreClient::init(int id) {
 
-	cout << "Inside GTStoreClient::init() for client " << id << "\n";
+//	cout << "Inside GTStoreClient::init() for client " << id << "\n";
 	client_id = id;
 
 	cls = ClientService(grpc::CreateChannel(MANAGER_IP, grpc::InsecureChannelCredentials()));
-	cout <<"client service created!"<<endl;
+//	cout <<"client service created!"<<endl;
 
 }
 
 val_t GTStoreClient::get(string key) {
 
-	cout << "Inside GTStoreClient::get() for client: " << client_id << " key: " << key << "\n";
+//	cout << "Inside GTStoreClient::get() for client: " << client_id << " key: " << key << "\n";
 	val_t value = cls.get(key);
 	return value;
 }
@@ -28,7 +28,7 @@ bool GTStoreClient::put(string key, val_t value) {
 	for (uint i = 0; i < value.size(); i++) {
 		print_value += value[i] + " ";
 	}
-	cout << "Inside GTStoreClient::put() for client: " << client_id << " key: " << key << " value: " << print_value << "\n";
+//	cout << "Inside GTStoreClient::put() for client: " << client_id << " key: " << key << " value: " << print_value << "\n";
 	// Put the value!
 	cls.put(key, value);
 
@@ -41,7 +41,7 @@ bool GTStoreClient::put_only_to_one_node(string key, val_t value) {
 	for (uint i = 0; i < value.size(); i++) {
 		print_value += value[i] + " ";
 	}
-	cout << "Inside GTStoreClient::put_only_to_one_node() for client: " << client_id << " key: " << key << " value: " << print_value << "\n";
+//	cout << "Inside GTStoreClient::put_only_to_one_node() for client: " << client_id << " key: " << key << " value: " << print_value << "\n";
 	// Put the value!
 	cls.put_one_node(key, value);
 
@@ -50,7 +50,7 @@ bool GTStoreClient::put_only_to_one_node(string key, val_t value) {
 
 void GTStoreClient::finalize() {
 
-	cout << "Inside GTStoreClient::finalize() for client " << client_id << "\n";
+//	cout << "Inside GTStoreClient::finalize() for client " << client_id << "\n";
 }
 
 
@@ -58,7 +58,7 @@ void GTStoreClient::finalize() {
 int main2(int argc, char **argv) {
 
 	if(argc < 2) {
-		cout << "no node name. \nex) ./client <some ip or node name>"<<endl;
+//		cout << "no node name. \nex) ./client <some ip or node name>"<<endl;
 		exit(EXIT_SUCCESS);
 	}
 
@@ -83,19 +83,19 @@ int main2(int argc, char **argv) {
 	sleep(2);
 	key = "A";
 	val_t v = client.get(key);
-	cout << "key: " << key << endl << "val: ";
+//	cout << "key: " << key << endl << "val: ";
 	for(auto it=v.begin();it!=v.end();it++) {
-		cout << *it << ", ";
+//		cout << *it << ", ";
 	}
-	cout <<endl;
+//	cout <<endl;
 
 	key = "B";
 	v = client.get(key);
-	cout << "key: " << key << endl << "val: ";
+//	cout << "key: " << key << endl << "val: ";
 	for(auto it=v.begin();it!=v.end();it++) {
-		cout << *it << ", ";
+//		cout << *it << ", ";
 	}
-	cout <<endl;
+//	cout <<endl;
 
 	// key = "C";
 	// v = client.get(key);
