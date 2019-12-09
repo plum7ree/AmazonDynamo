@@ -15,7 +15,12 @@ PrefListType HashRing::getPrefList(string k) {  // dynamo paper's preference lis
   assert(prefListSize <= hashMap.size());
   PrefListType ret;
   size_t h = std::hash<string>{}(k);
+//  cout << "HASH: " << h % hashMap.size() << endl;
+//  cout << "SIZE: " << hashMap.size() << endl;
+
   auto it = hashMap.lower_bound(h);
+//  auto it = hashMap.begin();
+//  std::advance(it, h % hashMap.size());
   if (it == hashMap.end()) {
     it = hashMap.begin();
   }

@@ -13,7 +13,7 @@ Status ManagerService::Put(ServerContext *ctx, const KeyAndValue *input, Empty *
   cout <<"key value from client: " + k << endl;
   PrefListType pl = ring.getPrefList(k);
   // PrefListType pl = {"node1" , "node2"};
-  cout << "preference list of size " << pl.size() << ": ";
+//  cout << "preference list of size " << pl.size() << ": ";
   for(auto it=pl.begin(); it != pl.end() ; it++) {
     cout << *it << ", ";
   }

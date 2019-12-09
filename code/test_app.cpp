@@ -123,6 +123,42 @@ void test_put_get_faulty_node(int faulty_node_pid) {
     cout << PASS;
     client.finalize();
 }
+
+void test_overriding_put_get() {
+    cout << "================== Test PUT GET on same key ==================\n";
+
+    GTStoreClient client;
+    client.init(0);
+
+    for(int i=0; i< 1; i++) {
+        string key = "mykey" + std::to_string(i);
+        for (int j=0;j<5; j++) {
+            vector<string> value;
+            value.push_back("myvalue" + std::to_string(j));
+            client.put(key, value);
+            cout << "writing:" << "myvalue" + std::to_string(j) << endl;
+        }
+        sleep(1);
+
+        for (int j =0;j < 1000; j ++) {
+
+            val_t res = client.get(key);
+            auto val = res.begin();
+//            while (val == res.end()) {
+//                res = client.get(key);
+//                val = res.begin();
+//            }
+            if (string(*val) != "myvalue4") {
+                cout << string(*val) << endl;
+                cout << FAIL;
+                client.finalize();
+                return;
+            }
+        }
+    }
+    cout << PASS;
+    client.finalize();
+}
 void test_basic_put_get() {
     cout << "================== Test Basic PUT GET ==================\n";
 
@@ -162,8 +198,7 @@ int main(int argc, char **argv) {
 	if (string(argv[1]) == "basic_put_get") {
 		test_basic_put_get();
     } else if (string(argv[1]) == "overriding_put_get") {
-        int pid = atoi(argv[2]);
-        test_put_get_faulty_node(pid);
+        test_overriding_put_get();
 	} else if (string(argv[1]) == "put_get_faulty_node") {
 	    int pid = atoi(argv[2]);
         test_put_get_faulty_node(pid);

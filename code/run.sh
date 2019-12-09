@@ -27,16 +27,16 @@ init () {
 
 cleanup () {
   for i in ${!STORAGE_PIDS[@]}; do
-    kill ${STORAGE_PIDS[$i]}
+    kill -9 ${STORAGE_PIDS[$i]}
   done
-  kill $MANAGER_PID
+  kill -9 $MANAGER_PID
+  if pgrep manager; then pgrep manager | xargs kill; fi
+  if pgrep storage; then pgrep storage | xargs kill; fi
 
 }
 
 
 benchmark () {
-  sudo pkill manager
-  sudo pkill storage
   init $1
 
   echo -n "" > benchmark.data
@@ -54,7 +54,7 @@ benchmark () {
 }
 
 # Launch the client testing app
-# Usage: ./test_app <test> <client_id>
+# Usage: ./run.sh
 init 5
 ./test_app basic_put_get
 ./test_app overriding_put_get
@@ -77,4 +77,3 @@ benchmark 2
 benchmark 3
 benchmark 4
 
-# Clean up - kill processes

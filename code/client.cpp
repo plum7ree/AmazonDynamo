@@ -55,54 +55,54 @@ void GTStoreClient::finalize() {
 
 
 
-int main2(int argc, char **argv) {
-
-	if(argc < 2) {
-//		cout << "no node name. \nex) ./client <some ip or node name>"<<endl;
-		exit(EXIT_SUCCESS);
-	}
-
-	GTStoreClient client;
-	client.init(getpid());
-
-	// string key = argv[1];
-	string key = "A";
-	vector<string> values;
-	values.push_back("a1");
-	values.push_back("a2");
-	values.push_back("a3");
-	client.put(key, values);
-
-	key = "B";
-	values.clear();
-	values.push_back("b1");
-	values.push_back("b2");
-	values.push_back("b3");
-	client.put_only_to_one_node(key, values);
-
-	sleep(2);
-	key = "A";
-	val_t v = client.get(key);
-//	cout << "key: " << key << endl << "val: ";
-	for(auto it=v.begin();it!=v.end();it++) {
+//int main(int argc, char **argv) {
+//
+//	if(argc < 2) {
+////		cout << "no node name. \nex) ./client <some ip or node name>"<<endl;
+//		exit(EXIT_SUCCESS);
+//	}
+//
+//	GTStoreClient client;
+//	client.init(getpid());
+//
+//	// string key = argv[1];
+//	string key = "A";
+//	vector<string> values;
+//	values.push_back("a1");
+//	values.push_back("a2");
+//	values.push_back("a3");
+//	client.put(key, values);
+//
+//	key = "B";
+//	values.clear();
+//	values.push_back("b1");
+//	values.push_back("b2");
+//	values.push_back("b3");
+//	client.put_only_to_one_node(key, values);
+//
+//	sleep(2);
+//	key = "A";
+//	val_t v = client.get(key);
+////	cout << "key: " << key << endl << "val: ";
+//	for(auto it=v.begin();it!=v.end();it++) {
 //		cout << *it << ", ";
-	}
-//	cout <<endl;
-
-	key = "B";
-	v = client.get(key);
-//	cout << "key: " << key << endl << "val: ";
-	for(auto it=v.begin();it!=v.end();it++) {
-//		cout << *it << ", ";
-	}
-//	cout <<endl;
-
-	// key = "C";
-	// v = client.get(key);
-	// cout << "key: " << v << endl << "val: ";
-	// for(auto it=v.begin();it!=v.end();it++) {
-	// 	cout << *it << ", ";
-	// }
-	// cout <<endl;
-
-}
+//	}
+////	cout <<endl;
+//
+//	key = "B";
+//	v = client.get(key);
+////	cout << "key: " << key << endl << "val: ";
+//	for(auto it=v.begin();it!=v.end();it++) {
+////		cout << *it << ", ";
+//	}
+////	cout <<endl;
+//
+//	// key = "C";
+//	// v = client.get(key);
+//	// cout << "key: " << v << endl << "val: ";
+//	// for(auto it=v.begin();it!=v.end();it++) {
+//	// 	cout << *it << ", ";
+//	// }
+//	// cout <<endl;
+//
+//}
