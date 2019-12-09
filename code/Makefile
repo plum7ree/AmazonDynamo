@@ -23,7 +23,7 @@ TESTS = test_app
 SRC = test_app.cpp
 
 
-all: $(TESTS)
+all: manager storage $(TESTS)
 
 manager: $(PROTOS_PATH)/message.pb.o $(PROTOS_PATH)/message.grpc.pb.o $(PROTOS_PATH)/managerService.o $(HASH_PATH)/consistent_hash.o $(TYPE_PATH)/helper.o manager.o
 	$(CC) $^ $(LDFLAGS) -o $@
@@ -49,4 +49,4 @@ con_hash: hash/consistent_hash.cpp
 ########################################################
 
 clean:
-	$(RM) *.o $(TESTS) conhash service/*.o hash/*.o type/*.o manager storage client
+	$(RM) *.o $(TESTS) conhash service/*.o service/*.grpc.* service/*.pb.* hash/*.o type/*.o manager storage client
