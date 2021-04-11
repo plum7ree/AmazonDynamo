@@ -24,19 +24,29 @@ distribution must be proportional to the capabilities of the
 individual servers. This is essential in adding new nodes with
 higher capacity without having to upgrade all hosts at once.
 
-## Consistent Hashing
-노드를 추가/제거 하더라도 전체 hash map 을 업데이트 할 필요가 없다. (일부분만 하면됨)
-### 1. Virtual Nodes
+## 1. Partitioning
 
-
-![image](https://user-images.githubusercontent.com/10215223/113497520-00df1e80-9540-11eb-85d6-ccf9aebaea01.png)
 ![image](https://user-images.githubusercontent.com/10215223/113497516-f45ac600-953f-11eb-9f7b-a8ab5a5b44d7.png)
 
-1. if a node becomes unavailable, the load handled by this node is evenly dispersed across remaining available nodes
-2. if a node becomes available again, new node accpets equivalent amount of node from each of other nodes.
-3. number of virtual node depends on capacity, infrastrucutre.
+기존의 retational DB(SQL)는 strong consistency 때문에 partition 이 불가능함 (partition 을 하면 strong consistency 가 어려움). 따라서 dynamo는 nosql 기반 (key-value 기반.)
 
-### 2. Replication
+> Traditional replicated relational database systems focus on the problem of guaranteeing strong consistency to replicated data. Although strong consistency provides the application writer a convenient programming model, these systems are limited in scalability and availability [7]. These systems are not capable of handling network partitions because they typically provide strong consistency guarantees.
+
+### 기존 consistency hashing 의 문제점
+
+만일 키 요청이 특정 area 에만 몰리면, 그 키값 범위의 노드만 데이터가 많아짐. (non-uniform, not equal load distribution)
+노드간의 performance 가 다를 수 있음을 고려하지안음.
+
+> The basic consistent hashing algorithm presents some challenges. First, the random position assignment of each node on the ring leads to non-uniform data and load distribution. Second, the basic algorithm is oblivious to the heterogeneity in the performance of nodes.
+
+### Dynamo의 Virtual Node 로 해결
+single point 에 저장하는대신 한 노드가 여러 partition 을 담당함.
+#### 이점.
+한 노드 장애 발생시 → 다른 이용가능한 노드가 data 를 핸들
+새 노드 추가시 → 다른 노드만큼의 equivalent amount of load 를 가짐
+한 노드가 담당하는 virtual node 의 갯수는 그 노드의 성능에 따라 다르게 설정할수있음 (인프라의 heterogeneity 대응 가능)
+
+## 2. Replication
 
 1. Coordinator node: node in charge of data items (first node in preference list).
 2. Preference list: The list of nodes that is responsible for storing a particular key
@@ -47,7 +57,9 @@ higher capacity without having to upgrade all hosts at once.
 3. Adding/Removing Storage Nodes (<b>chapter 4.9</b> in paper)
     1. 새로운 Node 가 추가되면, 기존의 노드가 갖고있던 key range 중 일부를 새로운 Node 의 key range 로 바꿔주면됨 (Laod Balancer 의 hashmap 을 수정해주면 됨). (데이터 이동에 대한 말은 논문에는 없음.)
 
+
+
 This projects supports
-1. Consistent Hashing with hash ring
+1. Partitioning with Consistent Hash.
 2. gRPC
 
